@@ -1,0 +1,8 @@
+python3 main.py:
+to crawler all data from www.moneycome.in
+output:
+  -- stock_list.json
+  -- stock_list.csv
+
+plot.py: TBD
+to plot a readable animation
