@@ -7,10 +7,15 @@ provide sorted expansion rate(AKA ROI) of each stock laid in following countries
 Deployed PyCharm to develop modules and packages.
 Plug-in Code-With-Me allows real time coding collaboratively.
 
-Pre-II phase still.
+MiniConda (or AnaConda if you don't mine disk size) is a MUST for self study on jupyter/IPython case.
+In some cases, some module like pandas can't be installed or run into trouble, you probably need Conda.
 
 Owner of Taiwan: Terran (https://github.com/terranandes)
 Main Web of crawler : https://www.moneycome.in/tool/compound_interest
+Status of project_tw:
+  -- Data collected successfully. Outputs (CSV, JSON) ready as well.
+  -- Data being analyzed using pandas.
+  -- Tool for presentation of animation is ready. ( https://app.flourish.studio/visualisation/5774508/edit? )
 
 Owner of China:
 TBD
