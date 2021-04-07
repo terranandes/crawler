@@ -7,8 +7,8 @@ provide sorted expansion rate(AKA ROI) of each stock laid in following countries
 Deployed PyCharm to develop modules and packages.
 Plug-in Code-With-Me allows real time coding collaboratively.
 
-MiniConda (or AnaConda if you don't mine disk size) is a MUST for self study on jupyter/IPython case.
-In some cases, some module like pandas can't be installed or run into trouble, you probably need Conda.
+MiniConda (or AnaConda if you don't mind disk size) is a MUST for self study on jupyter/IPython case.
+In some cases, some modules like pandas can't be installed or might run into trouble, you probably need Conda.
 
 Owner of Taiwan: Terran (https://github.com/terranandes)
 Main Web of crawler : https://www.moneycome.in/tool/compound_interest
@@ -63,8 +63,23 @@ Unix ENV for
 Windows:
 Ubuntu on Windows Store
 
+Miniconda on Windows:
+https://docs.conda.io/en/latest/miniconda.html#windows-installers
+Miniconda on Windows Ubuntu:
+https://docs.conda.io/en/latest/miniconda.html#linux-installers
+
 MAC:
-iTerm2+Zim+Powerlevel10k+Homebrew
+  - iTerm2+Zim+Powerlevel10k+Homebrew (Please google)
+  - install Miniconda on Homebrew
+    - https://formulae.brew.sh/cask/miniconda#default
+  - install modules like pandas, which fail in some MAC(M1) pip3 ...
+    - conda install pandas
+
+Why Conda?
+Generally, we might learn Python using JupyterNotebook(or JupyterLab) from conda more quickly.
+And furthur python modules are owned by Conda.
+In M1, module like panda cannot be installed via default pip or homebrew pip.
+For concern of disk usage, you can start with Miniconda instead of Anaconda.
 
 Output:
   - A CSV, A JSON file to present expansion rate of each stock
