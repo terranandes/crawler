@@ -83,15 +83,15 @@ if __name__ == '__main__':
             if 'buyAtOpening' in sd_resp :
               bao = float(sd_resp['buyAtOpening']['yroi'].replace(' %', ''))
             else :
-              bao = None
+              bao = 0
             if 'buyAtHighest' in sd_resp :
               bah = float(sd_resp['buyAtHighest']['yroi'].replace(' %', ''))
             else :
-              bah = None
+              bah = 0
             if 'buyAtLowest' in sd_resp :
               bal = float(sd_resp['buyAtLowest']['yroi'].replace(' %', ''))
             else :
-              bal = None
+              bal = 0
             if 'stkName' in sd_resp :
               stn = sd_resp['stkName']
             else :
@@ -99,7 +99,7 @@ if __name__ == '__main__':
             if 'n' in sd_resp :
               yrs = sd_resp['n']
             else :
-              yrs = None
+              yrs = 0
             print (stn, bao, bah, bal, yrs)
             sd_d['id'] = st
             sd_d['name'] = stn
