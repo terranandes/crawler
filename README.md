@@ -87,7 +87,6 @@ Output:
   - An animaion to engage audience by
     https://flourish.studio/
     Demo:
-    https://www.youtube.com/watch?v=BJ7DKztSfKE
-    https://app.flourish.studio/visualisation/5774508/edit?
+    https://bit.ly/39WtfP1
 
 Shared directoy is moved to https://github.com/terranfund/exercise_docs.
