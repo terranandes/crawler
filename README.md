@@ -89,3 +89,5 @@ Output:
     Demo:
     https://www.youtube.com/watch?v=BJ7DKztSfKE
     https://app.flourish.studio/visualisation/5774508/edit?
+
+Shared directoy is moved to https://github.com/terranfund/exercise_docs.
