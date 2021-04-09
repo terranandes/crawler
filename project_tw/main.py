@@ -1,4 +1,4 @@
-import requests
+import requests as reqs
 import json
 import csv
 import re
@@ -6,13 +6,18 @@ import time
 import getopt
 from datetime import datetime as dt
 from bs4 import BeautifulSoup as soup
-import matplotlib
-import pandas
-import bar_chart_race as bcr
-#import numpy
+#import bar_chart_race as bcr
 #import plotly
 #import scipy
 #scikit-learn
+#import matplotlib.pyplot as plt
+#import pandas as pd
+#import numpy as np
+#import getopt
+#import subprocess
+#import mulprocessing
+#import threading
+
 
 #def print_hi(name):
 #    print(f'Hi, {name}')  # Print template
@@ -37,7 +42,7 @@ if __name__ == '__main__':
                 "crashThreshold":0.3,
                 "invAmtForCrash":60000}
     #Get supported stock list (done)
-    resp_orig = requests.get(url_orig)
+    resp_orig = reqs.get(url_orig)
     resp_orig.raise_for_status()
     #print(resp_orig.text) #type : string
     page_orig = resp_orig.text
@@ -74,7 +79,7 @@ if __name__ == '__main__':
             retry = True
             while retry :
               try :
-                resp_exep = requests.post(url_exep, json=para_exep)
+                resp_exep = reqs.post(url_exep, json=para_exep)
                 resp_exep.raise_for_status() #REVIST, need redo if received "Bad request'
                 retry = False
               except:
