@@ -6,17 +6,17 @@ import time
 import getopt
 from datetime import datetime as dt
 from bs4 import BeautifulSoup as soup
-#import bar_chart_race as bcr
+import bar_chart_race as bcr
+import pandas as pd
+import getopt
+import subprocess
+import multiprocessing
+import threading
 #import plotly
 #import scipy
 #scikit-learn
 #import matplotlib.pyplot as plt
-#import pandas as pd
 #import numpy as np
-#import getopt
-#import subprocess
-#import mulprocessing
-#import threading
 
 
 #def print_hi(name):
