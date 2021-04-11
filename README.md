@@ -84,7 +84,10 @@ For concern of disk usage, you can start with Miniconda instead of Anaconda.
 Output:
   - A CSV, A JSON file to present expansion rate of each stock
     with statistical analysis by module pandas or even AI
-  - An animaion to engage audience by
+  - BAR-CHART-RACE animations by native python module to engage audience
+    https://pypi.org/project/bar-chart-race/
+
+  - Or alternaive by outsourcing from Web
     https://flourish.studio/
     Demo:
     https://bit.ly/39WtfP1

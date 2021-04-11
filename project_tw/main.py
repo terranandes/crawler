@@ -8,7 +8,10 @@ from datetime import datetime as dt
 from bs4 import BeautifulSoup as soup
 import matplotlib
 import pandas
-import numpy
+#import numpy
+#import plotly
+#import scipy
+#scikit-learn
 
 #def print_hi(name):
 #    print(f'Hi, {name}')  # Print template
@@ -94,8 +97,10 @@ if __name__ == '__main__':
               bal = 0
             if 'stkName' in sd_resp :
               stn = sd_resp['stkName']
+              id_name = st+'-'+stn
             else :
               stn = None
+              id_name = st
             if 'n' in sd_resp :
               yrs = sd_resp['n']
             else :
@@ -103,6 +108,7 @@ if __name__ == '__main__':
             print (stn, bao, bah, bal, yrs)
             sd_d['id'] = st
             sd_d['name'] = stn
+            sd_d['id_name'] = id_name
             sd_d['s'+str(sy)+'e'+str(ey)+'bao'] = bao
             sd_d['s'+str(sy)+'e'+str(ey)+'bah'] = bah
             sd_d['s'+str(sy)+'e'+str(ey)+'bal'] = bal
