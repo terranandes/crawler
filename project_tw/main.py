@@ -8,6 +8,7 @@ from datetime import datetime as dt
 from bs4 import BeautifulSoup as soup
 import matplotlib
 import pandas
+import bar_chart_race as bcr
 #import numpy
 #import plotly
 #import scipy
