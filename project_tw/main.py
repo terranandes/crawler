@@ -27,7 +27,64 @@ def upt_para(para, st, sy, ey) :
   para['stkCode'] = st
   para['startYear'] = sy
   para['endYear'] = ey
-  
+
+def get_stock_info_year(i, sy, ey, para_exep, st):
+    sd_d = {}
+    if sy < ey:
+        upt_para(para_exep, st, sy, ey)
+        retry = True
+        while retry:
+            try:
+                resp_exep = reqs.post(url_exep, json=para_exep)
+                resp_exep.raise_for_status()  # REVIST, need redo if received "Bad request'
+                retry = False
+            except:
+                print('Well, let\'s take a rest: 60s')
+                time.sleep(60)
+
+        # print(resp.text) #type : string
+        print(st, sy, ey)
+        sd_resp = json.loads(resp_exep.text)  # stock_dict response
+        if 'buyAtOpening' in sd_resp:
+            bao = float(sd_resp['buyAtOpening']['yroi'].replace(' %', ''))
+        else:
+            bao = 0
+        if 'buyAtHighest' in sd_resp:
+            bah = float(sd_resp['buyAtHighest']['yroi'].replace(' %', ''))
+        else:
+            bah = 0
+        if 'buyAtLowest' in sd_resp:
+            bal = float(sd_resp['buyAtLowest']['yroi'].replace(' %', ''))
+        else:
+            bal = 0
+        if 'stkName' in sd_resp:
+            stn = sd_resp['stkName']
+            id_name = st + '-' + stn
+        else:
+            stn = None
+            id_name = st
+        if 'n' in sd_resp:
+            yrs = sd_resp['n']
+        else:
+            yrs = 0
+        print(stn, bao, bah, bal, yrs)
+        sd_d['id'] = st
+        sd_d['name'] = stn
+        sd_d['id_name'] = id_name
+        sd_d['s' + str(sy) + 'e' + str(ey) + 'bao'] = bao
+        sd_d['s' + str(sy) + 'e' + str(ey) + 'bah'] = bah
+        sd_d['s' + str(sy) + 'e' + str(ey) + 'bal'] = bal
+        sd_d['s' + str(sy) + 'e' + str(ey) + 'yrs'] = yrs
+    return sd_d
+
+def get_stock_info(i, para_exep, st) :
+    sd_d={}
+    for sy in range(2006, 2021):  # 2006~2020
+        for ey in range(2007, 2022):  # 2007~2021
+            sd_d_y = get_stock_info_year(i, sy, ey, para_exep, st)
+            sd_d.update(sd_d_y)
+    return sd_d
+
 if __name__ == '__main__':
     starttime = dt.now()
     print(starttime)
@@ -64,63 +121,13 @@ if __name__ == '__main__':
         sd_l = json.load(jsonFile)
     except Exception :
       sd_l = []
-    for i, st in enumerate(stock_list, start=0):
-      #if i < 0 :
-      #  continue
-      #elif i > 1 :
-      #  break
-      #if i > -1 :
-      #  break
-      sd_d = {}
-      print(i, st)
-      for sy in range(2006, 2021) :   #2006~2020
-        for ey in range(2007, 2022) : #2007~2021
-          if sy < ey :
-            upt_para(para_exep, st, sy, ey)
-            retry = True
-            while retry :
-              try :
-                resp_exep = reqs.post(url_exep, json=para_exep)
-                resp_exep.raise_for_status() #REVIST, need redo if received "Bad request'
-                retry = False
-              except:
-                print('Well, let\'s take a rest: 60s')
-                time.sleep(60)
 
-            #print(resp.text) #type : string
-            print(st, sy, ey)
-            sd_resp = json.loads(resp_exep.text) #stock_dict response
-            if 'buyAtOpening' in sd_resp :
-              bao = float(sd_resp['buyAtOpening']['yroi'].replace(' %', ''))
-            else :
-              bao = 0
-            if 'buyAtHighest' in sd_resp :
-              bah = float(sd_resp['buyAtHighest']['yroi'].replace(' %', ''))
-            else :
-              bah = 0
-            if 'buyAtLowest' in sd_resp :
-              bal = float(sd_resp['buyAtLowest']['yroi'].replace(' %', ''))
-            else :
-              bal = 0
-            if 'stkName' in sd_resp :
-              stn = sd_resp['stkName']
-              id_name = st+'-'+stn
-            else :
-              stn = None
-              id_name = st
-            if 'n' in sd_resp :
-              yrs = sd_resp['n']
-            else :
-              yrs = 0
-            print (stn, bao, bah, bal, yrs)
-            sd_d['id'] = st
-            sd_d['name'] = stn
-            sd_d['id_name'] = id_name
-            sd_d['s'+str(sy)+'e'+str(ey)+'bao'] = bao
-            sd_d['s'+str(sy)+'e'+str(ey)+'bah'] = bah
-            sd_d['s'+str(sy)+'e'+str(ey)+'bal'] = bal
-            sd_d['s'+str(sy)+'e'+str(ey)+'yrs'] = yrs
+    for i, st in enumerate(stock_list, start=0):
+      print(i, st)
+      para_exep_dup = dict(para_exep)
+      sd_d = get_stock_info(i, para_exep_dup, st)
       sd_l.append(sd_d)
+
     # output JSON and CSV File
     # JSON & DICT format
     # [{id   : 6533,
