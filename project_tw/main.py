@@ -10,9 +10,12 @@ import bar_chart_race as bcr
 import pandas as pd
 import getopt
 import subprocess
-import multiprocessing
-import threading
+#import multiprocessing
+#import threading
 import asyncio
+import httpx
+#import scrapy
+#import requests_html
 #import plotly
 #import scipy
 #scikit-learn
