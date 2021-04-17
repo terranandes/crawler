@@ -47,6 +47,23 @@ https://www.jianshu.com/p/62524f4c240e
 requests & selenium & beauifualsoup4 & pandas in a youtube video:
 https://youtu.be/jV6eHoLzD2E
 
+asyncio & httpx:
+Asynchronously crawler web data by asyncio and replacing requests with httpx
+asyncio:
+https://docs.python.org/3/library/asyncio-task.html
+https://www.maxlist.xyz/2020/03/29/python-coroutine/
+https://docs.python.org/3/library/asyncio-task.html#asyncio.gather
+https://www.dongwm.com/post/understand-asyncio-1
+https://ithelp.ithome.com.tw/articles/10199385
+
+httpx:
+https://pypi.org/project/httpx/
+golden example for nested httpx request:
+https://github.com/terranfund/exercise_docs/blob/master/test/asyncio_gather_high_level_golden_httptx.py
+https://towardsdatascience.com/supercharge-pythons-requests-with-async-io-httpx-75b4a5da52d7
+
+
+
 In English:
 Pandas:
 https://www.youtube.com/watch?v=vmEHCJofslg
