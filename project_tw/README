@@ -1,4 +1,6 @@
-python3 main.py:
+python3 main.py:            (sync  crawlering, time to complete: 24hr)
+python3 main_async_httpx.py (async crawlering, time to complete: 15 minx?)
+
 to crawler all data from www.moneycome.in
 output:
   -- stock_list.json
@@ -7,8 +9,9 @@ output:
 plot.py: TBD
 to plot a readable animation
 
-TBD:
-  -- Parallel crawling in #stocks threading
-  -- Object-Oriented Programming
+TBD: (prioritized)
+  -- Async Crawlering using asyncio and httpx (done)
   -- Pandas filtering (data analysis) for a sensible result
-  -- Serialized to demo https://bit.ly/39WtfP1
+  -- Serialized using bar-chart-race
+  -- Object-Oriented Programming
+  -- Release shared package for twined project_usa and project_cn

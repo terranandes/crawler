@@ -46,14 +46,14 @@ async def get_stock_info_year(i, sy, ey, para_exep, st):
             async with httpx.AsyncClient() as client:
                 resp_exep = await client.post(url_exep, json=para_qry)
                 #resp_exep = reqs.post(url_exep, json=para_qry)
-                print(resp_exep)
-                print(resp_exep.json())
+                #print(resp_exep)
+                #print(resp_exep.json())
                 resp_exep.raise_for_status()  # REVISIT, need redo if received "Bad request'
                 retry = False
         except Exception as e:
             print(e, 'Hello info?')
-            print('Well, let\'s take a rest: 60s')
-            time.sleep(60)
+            print('Well, let\'s take a rest: 1s')
+            time.sleep(1)
 
     sd_resp = json.loads(resp_exep.text)  # stock_dict response
     if 'buyAtOpening' in sd_resp:
@@ -84,14 +84,14 @@ async def get_stock_id_name(para_exep, st):
             async with httpx.AsyncClient() as client:
                 resp_exep = await client.post(url_exep, json=para_qry)
                 #resp_exep = reqs.post(url_exep, json=para_qry)
-                print(resp_exep)
-                print(resp_exep.json())
+                #print(resp_exep)
+                #print(resp_exep.json())
                 resp_exep.raise_for_status()  # REVISIT, need redo if received "Bad request'
                 retry = False
         except Exception as e:
             print(e, 'Hello id?')
-            print('Well, let\'s take a rest: 60s')
-            time.sleep(60)
+            print(f'Well, let\'s take a rest: {retry_interval}s')
+            time.sleep(retry_interval)
 
     sd_resp = json.loads(resp_exep.text)  # stock_dict response
     if 'stkName' in sd_resp:
@@ -107,8 +107,8 @@ async def get_stock_info(i, para_exep, st) :
     print('start get_stock_info', st)
     tasks = []
     task_get_stock_id_name = asyncio.create_task(get_stock_id_name(para_exep, st))
-    for sy in range(2006, 2007):  # 2006~2020
-        for ey in range(2007, 2008):  # 2007~2021
+    for sy in range(2006, start_year_ub):  # 2006~2020
+        for ey in range(2007, end_year_ub):  # 2007~2021
             if sy < ey :
                 tasks.append(get_stock_info_year(i, sy, ey, para_exep, st))
     result = await asyncio.gather(task_get_stock_id_name, *tasks)
@@ -118,8 +118,8 @@ async def get_stock_info(i, para_exep, st) :
 def get_stock_header():
     stock_header = ['id', 'name', 'id_name']
     print('start get_stock_header')
-    for sy in range(2006, 2008):  # 2006~2020
-        for ey in range(2007, 2009):  # 2007~2021
+    for sy in range(2006, start_year_ub):  # 2006~2020
+        for ey in range(2007, end_year_ub):  # 2007~2021
             if sy < ey :
                 stock_header.append('s' + str(sy) + 'e' + str(ey) + 'bao')
                 stock_header.append('s' + str(sy) + 'e' + str(ey) + 'bah')
@@ -136,21 +136,21 @@ def flatten (lol) :
             yield item
 
 async def main(stock_list, para_exep):
-    stock_header = get_stock_header()
-    #group = asyncio.gather(*[get_stock_info(i,para_exep, stock) for i, stock in enumerate(stock_list, start=0)])
-    stock_100 = stock_list[0:9]
-    #group = asyncio.gather(*[get_stock_info(i,para_exep, stock) for i, stock in enumerate(stock_list, start=0)])
-    group = asyncio.gather(*[get_stock_info(i,para_exep, stock) for i, stock in enumerate(stock_100, start=0)])
+    #stock_header = get_stock_header()
+    #stock_100 = stock_list[0:9]
     print('start asyncio.run')
-    result = await asyncio.gather(group)
-    print('Stock Header:' ,stock_header) #right result
+    #result = await asyncio.gather(*[get_stock_info(i,para_exep, stock) for i, stock in enumerate(stock_100, start=0)])
+    result = await asyncio.gather(*[get_stock_info(i,para_exep, stock) for i, stock in enumerate(stock_list, start=0)])
+    #result = await asyncio.gather(group)
+    #print('Stock Header:' ,stock_header) #right result
     print('Main result1:' ,result)
-    result_flt = list(flatten(result))
-    print('Main result_flt:' ,result_flt)
-    stock_header.extend(result_flt)
-    print('Main result final:' ,stock_header)
-    print('end asyncio.run')
-    return stock_header
+    result_final = []
+    #result_final.append(stock_header)
+    for stock_entry in result:
+        stock_flt = list(flatten(stock_entry))
+        result_final.append(stock_flt)
+    print('Fianl result:', result_final)
+    return result_final
 
 def get_supportred_stock (url) :
     resp = reqs.get(url)
@@ -171,9 +171,17 @@ def get_supportred_stock (url) :
 if __name__ == '__main__':
     starttime = dt.now()
     print(starttime)
-    limits = httpx.Limits(max_keepalive_connections=5, max_connections=10)
-    client = httpx.Client(limits=limits)
     #initialize variable
+    #User modifiable CFG, To be configured by getopt module
+    max_live_connect_httpx = None #5, max 10
+    max_connect_httpx = None #10, max 100
+    chunk = 1
+    start_year_ub = 2021
+    end_year_ub = 2022
+    retry_interval = 1
+
+    limits = httpx.Limits(max_keepalive_connections=max_live_connect_httpx, max_connections=max_connect_httpx)
+    client = httpx.Client(limits=limits)
     url_orig = "https://www.moneycome.in/tool/compound_interest?stkCode=6533"
     url_exep = "https://www.moneycome.in/piggy/s/ci/calcStock"
     para_exep = { "stkCode":"6533",
@@ -198,7 +206,21 @@ if __name__ == '__main__':
     #except Exception :
     #  sd_l = []
 
-    sd_l = asyncio.run(main(stock_list, para_exep))
+    sd_l = []
+    stock_header = get_stock_header()
+    sd_l.append(stock_header) #get csv first row
+    print('Stock Header:' ,stock_header) #right result
+    offset = 0
+    size = len(stock_list)
+    print('stock number:', size)
+    while True:
+        if offset > size:
+            break
+        sd_chunk = asyncio.run(main(stock_list[offset:offset+chunk], para_exep))
+        sd_l.extend(sd_chunk)
+        offset += chunk    
+
+    #sd_l = asyncio.run(main(stock_list, para_exep))
 
     print(sd_l)
 
@@ -221,11 +243,11 @@ if __name__ == '__main__':
 
     #CSV format
     #id name s2006e2007 s2006e2008 ... s2006e2020 s2007e2008 ...s2007e2020 .. s2019e2020
-    #fn_csv = 'stock_list.csv'
-    #with open(fn_csv, 'w', newline = '', encoding='utf-8') as csvFile :
-    #  csvWriter = csv.writer(csvFile)
-    #  for row in sd_l :
-    #    csvWriter.writerow(row)
+    fn_csv = 'stock_list.csv'
+    with open(fn_csv, 'w', newline = '', encoding='utf-8') as csvFile :
+      csvWriter = csv.writer(csvFile)
+      for row in sd_l :
+        csvWriter.writerow(row)
       
     #Final Step
     #Animation for it
