@@ -39,12 +39,12 @@ def upt_para(para, st, sy, ey) :
 
 async def get_stock_info_year(i, sy, ey, para_exep, st):
     #global client
-    print('start get_stock_info_year', i, sy, ey, st)
+    #print('start get_stock_info_year', i, sy, ey, st)
     para_qry = upt_para(para_exep, st, sy, ey)
     retry = True
     while retry:
         try:
-            async with httpx.AsyncClient(limits=limits) as aclient:
+            async with httpx.AsyncClient() as aclient:
             #async with client as aclient:
                 resp_exep = await aclient.post(url_exep, json=para_qry)
                 #resp_exep = reqs.post(url_exep, json=para_qry)
@@ -53,7 +53,7 @@ async def get_stock_info_year(i, sy, ey, para_exep, st):
                 resp_exep.raise_for_status()  # REVISIT, need redo if received "Bad request'
                 retry = False
         except Exception as e:
-            print(e, 'Hello info?')
+            print(e, url_exep, para_qry, 'Hello info?')
             print(f'Well, let\'s take a rest: {retry_interval}s')
             time.sleep(retry_interval)
 
@@ -74,26 +74,26 @@ async def get_stock_info_year(i, sy, ey, para_exep, st):
         yrs = sd_resp['n']
     else:
         yrs = 0
-    print('end get_stock_info_year', i, sy, ey, st)
+    #print('end get_stock_info_year', i, sy, ey, st)
     return [bao, bah, bal, yrs]
 
-async def get_stock_id_name(para_exep, st):
+def get_stock_id_name(para_exep, st):
     #global client
-    print('start get_stock_id_name', st)
+    #print('start get_stock_id_name', st)
     para_qry = upt_para(para_exep, st, 2006, 2020)
     retry = True
     while retry:
         try:
-            async with httpx.AsyncClient(limits=limits) as aclient:
+            resp_exep = reqs.post(url_exep, json=para_qry)
+            #async with httpx.AsyncClient(limits=limits) as aclient:
             #async with client as aclient:
-                resp_exep = await aclient.post(url_exep, json=para_qry)
-                #resp_exep = reqs.post(url_exep, json=para_qry)
+                #resp_exep = await aclient.post(url_exep, json=para_qry)
                 #print(resp_exep)
                 #print(resp_exep.json())
-                resp_exep.raise_for_status()  # REVISIT, need redo if received "Bad request'
-                retry = False
+            resp_exep.raise_for_status()  # REVISIT, need redo if received "Bad request'
+            retry = False
         except Exception as e:
-            print(e, 'Hello id?')
+            print(e, url_exep, para_qry, 'Hello id?')
             print(f'Well, let\'s take a rest: {retry_interval}s')
             time.sleep(retry_interval)
 
@@ -104,18 +104,29 @@ async def get_stock_id_name(para_exep, st):
     else:
         stn = None
         id_name = st
-    print('end get_stock_id_name', st)
+    #print('end get_stock_id_name', st)
     return [st, stn, id_name]
 
 async def get_stock_info(i, para_exep, st) :
     #print('start get_stock_info', st)
     tasks = []
-    task_get_stock_id_name = asyncio.create_task(get_stock_id_name(para_exep, st))
+    result = []
+    #task_get_stock_id_name = asyncio.create_task(get_stock_id_name(para_exep, st))
+    result.extend(get_stock_id_name(para_exep, st))
     for sy in range(2006, start_year_ub):  # 2006~2020
         for ey in range(2007, end_year_ub):  # 2007~2021
             if sy < ey :
                 tasks.append(get_stock_info_year(i, sy, ey, para_exep, st))
-    result = await asyncio.gather(task_get_stock_id_name, *tasks)
+    offset = 0
+    size = len(tasks)
+    while True:
+        if offset > size:
+            break
+        result_chunk = await asyncio.gather(*tasks[offset:offset+info_chunk])
+        result.extend(result_chunk)
+        offset += info_chunk
+    #result = await asyncio.gather(task_get_stock_id_name, *tasks)
+    #result.extend(result_chunk)
     #print('end get_stock_info', st)
     return result
 
@@ -177,15 +188,16 @@ if __name__ == '__main__':
     print(starttime)
     #initialize variable
     #User modifiable CFG, To be configured by getopt module
-    max_live_connect_httpx = 1 #None #5, max 10
-    max_connect_httpx = 1 #None #10, max 100
-    chunk = 1
+    #max_live_connect_httpx = 1 #None #5, max 10
+    #max_connect_httpx = 1 #None #10, max 100
+    stock_chunk = 1
+    info_chunk = 60
     start_year_ub = 2021
     end_year_ub = 2022
-    retry_interval = 60
+    retry_interval = 1
 
-    limits = httpx.Limits(max_keepalive_connections=max_live_connect_httpx, max_connections=max_connect_httpx)
-    client = httpx.AsyncClient(limits=limits)
+    #limits = httpx.Limits(max_keepalive_connections=max_live_connect_httpx, max_connections=max_connect_httpx)
+    #client = httpx.AsyncClient(limits=limits)
     url_orig = "https://www.moneycome.in/tool/compound_interest?stkCode=6533"
     url_exep = "https://www.moneycome.in/piggy/s/ci/calcStock"
     para_exep = { "stkCode":"6533",
@@ -198,7 +210,7 @@ if __name__ == '__main__':
                 "crashThreshold":0.3,
                 "invAmtForCrash":60000}
 
-    #Get supported stock list (done)
+    #Get supported stock list
     stock_list = get_supportred_stock(url_orig)
     #print(stock_list)
 
@@ -220,9 +232,9 @@ if __name__ == '__main__':
     while True:
         if offset > size:
             break
-        sd_chunk = asyncio.run(main(stock_list[offset:offset+chunk], para_exep))
+        sd_chunk = asyncio.run(main(stock_list[offset:offset+stock_chunk], para_exep))
         sd_l.extend(sd_chunk)
-        offset += chunk    
+        offset += stock_chunk
 
     #sd_l = asyncio.run(main(stock_list, para_exep))
 
@@ -253,11 +265,15 @@ if __name__ == '__main__':
       for row in sd_l :
         csvWriter.writerow(row)
       
+    #Second Step
+    #Data Analysis using Pandas
+    #Todo begin
+    #Todo end
     #Final Step
     #Animation for it
-    #TBD Begin
+    #Todo Begin
     #bar_chart_race
-    #TBD End
+    #Todo End
 
 print('                  _            ')
 print('                /`o\__         ')
