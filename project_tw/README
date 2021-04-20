@@ -13,5 +13,6 @@ TBD: (prioritized)
   -- Async Crawlering using asyncio and httpx (done)
   -- Pandas filtering (data analysis) for a sensible result
   -- Serialized using bar-chart-race
+  -- MultiProcessing to reduce number of crawlering and calculate ROI in local M1 8 cores (?)
   -- Object-Oriented Programming
   -- Release shared package for twined project_usa and project_cn

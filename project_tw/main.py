@@ -46,8 +46,8 @@ def get_stock_info_year(i, sy, ey, para_exep, st):
                 resp_exep.raise_for_status()  # REVIST, need redo if received "Bad request'
                 retry = False
             except:
-                print('Well, let\'s take a rest: 60s')
-                time.sleep(60)
+                print('Well, let\'s take a rest: {retry_interval}s')
+                time.sleep(retry_interval)
 
         # print(resp.text) #type : string
         print(st, sy, ey)
@@ -86,8 +86,8 @@ def get_stock_info_year(i, sy, ey, para_exep, st):
 
 def get_stock_info(i, para_exep, st) :
     sd_d={}
-    for sy in range(2006, 2021):  # 2006~2020
-        for ey in range(2007, 2022):  # 2007~2021
+    for sy in range(2006, start_year_ub):  # 2006~2020
+        for ey in range(2007, end_year_ub):  # 2007~2021
             sd_d_y = get_stock_info_year(i, sy, ey, para_exep, st)
             sd_d.update(sd_d_y)
     return sd_d
@@ -95,6 +95,9 @@ def get_stock_info(i, para_exep, st) :
 if __name__ == '__main__':
     starttime = dt.now()
     print(starttime)
+    start_year_ub = 2021
+    end_year_ub = 2022
+    retry_interval = 1
     url_orig = "https://www.moneycome.in/tool/compound_interest?stkCode=6533"
     url_exep = "https://www.moneycome.in/piggy/s/ci/calcStock"
     para_exep = { "stkCode":"6533",

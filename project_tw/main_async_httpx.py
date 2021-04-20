@@ -38,13 +38,15 @@ def upt_para(para, st, sy, ey) :
     return para_dup
 
 async def get_stock_info_year(i, sy, ey, para_exep, st):
+    #global client
     print('start get_stock_info_year', i, sy, ey, st)
     para_qry = upt_para(para_exep, st, sy, ey)
     retry = True
     while retry:
         try:
-            async with httpx.AsyncClient() as client:
-                resp_exep = await client.post(url_exep, json=para_qry)
+            async with httpx.AsyncClient(limits=limits) as aclient:
+            #async with client as aclient:
+                resp_exep = await aclient.post(url_exep, json=para_qry)
                 #resp_exep = reqs.post(url_exep, json=para_qry)
                 #print(resp_exep)
                 #print(resp_exep.json())
@@ -52,8 +54,8 @@ async def get_stock_info_year(i, sy, ey, para_exep, st):
                 retry = False
         except Exception as e:
             print(e, 'Hello info?')
-            print('Well, let\'s take a rest: 1s')
-            time.sleep(1)
+            print(f'Well, let\'s take a rest: {retry_interval}s')
+            time.sleep(retry_interval)
 
     sd_resp = json.loads(resp_exep.text)  # stock_dict response
     if 'buyAtOpening' in sd_resp:
@@ -76,13 +78,15 @@ async def get_stock_info_year(i, sy, ey, para_exep, st):
     return [bao, bah, bal, yrs]
 
 async def get_stock_id_name(para_exep, st):
+    #global client
     print('start get_stock_id_name', st)
     para_qry = upt_para(para_exep, st, 2006, 2020)
     retry = True
     while retry:
         try:
-            async with httpx.AsyncClient() as client:
-                resp_exep = await client.post(url_exep, json=para_qry)
+            async with httpx.AsyncClient(limits=limits) as aclient:
+            #async with client as aclient:
+                resp_exep = await aclient.post(url_exep, json=para_qry)
                 #resp_exep = reqs.post(url_exep, json=para_qry)
                 #print(resp_exep)
                 #print(resp_exep.json())
@@ -104,7 +108,7 @@ async def get_stock_id_name(para_exep, st):
     return [st, stn, id_name]
 
 async def get_stock_info(i, para_exep, st) :
-    print('start get_stock_info', st)
+    #print('start get_stock_info', st)
     tasks = []
     task_get_stock_id_name = asyncio.create_task(get_stock_id_name(para_exep, st))
     for sy in range(2006, start_year_ub):  # 2006~2020
@@ -112,12 +116,12 @@ async def get_stock_info(i, para_exep, st) :
             if sy < ey :
                 tasks.append(get_stock_info_year(i, sy, ey, para_exep, st))
     result = await asyncio.gather(task_get_stock_id_name, *tasks)
-    print('end get_stock_info', st)
+    #print('end get_stock_info', st)
     return result
 
 def get_stock_header():
+    #print('start get_stock_header')
     stock_header = ['id', 'name', 'id_name']
-    print('start get_stock_header')
     for sy in range(2006, start_year_ub):  # 2006~2020
         for ey in range(2007, end_year_ub):  # 2007~2021
             if sy < ey :
@@ -125,7 +129,7 @@ def get_stock_header():
                 stock_header.append('s' + str(sy) + 'e' + str(ey) + 'bah')
                 stock_header.append('s' + str(sy) + 'e' + str(ey) + 'bal')
                 stock_header.append('s' + str(sy) + 'e' + str(ey) + 'yrs')
-    print('end get_stock_header')
+    #print('end get_stock_header')
     return stock_header
 
 def flatten (lol) :
@@ -136,14 +140,14 @@ def flatten (lol) :
             yield item
 
 async def main(stock_list, para_exep):
-    #stock_header = get_stock_header()
-    #stock_100 = stock_list[0:9]
-    print('start asyncio.run')
+    #global client
+    #print('start asyncio.run')
     #result = await asyncio.gather(*[get_stock_info(i,para_exep, stock) for i, stock in enumerate(stock_100, start=0)])
     result = await asyncio.gather(*[get_stock_info(i,para_exep, stock) for i, stock in enumerate(stock_list, start=0)])
+    #await client.aclose()
     #result = await asyncio.gather(group)
     #print('Stock Header:' ,stock_header) #right result
-    print('Main result1:' ,result)
+    #print('Main result1:' ,result)
     result_final = []
     #result_final.append(stock_header)
     for stock_entry in result:
@@ -173,15 +177,15 @@ if __name__ == '__main__':
     print(starttime)
     #initialize variable
     #User modifiable CFG, To be configured by getopt module
-    max_live_connect_httpx = None #5, max 10
-    max_connect_httpx = None #10, max 100
+    max_live_connect_httpx = 1 #None #5, max 10
+    max_connect_httpx = 1 #None #10, max 100
     chunk = 1
     start_year_ub = 2021
     end_year_ub = 2022
-    retry_interval = 1
+    retry_interval = 60
 
     limits = httpx.Limits(max_keepalive_connections=max_live_connect_httpx, max_connections=max_connect_httpx)
-    client = httpx.Client(limits=limits)
+    client = httpx.AsyncClient(limits=limits)
     url_orig = "https://www.moneycome.in/tool/compound_interest?stkCode=6533"
     url_exep = "https://www.moneycome.in/piggy/s/ci/calcStock"
     para_exep = { "stkCode":"6533",
