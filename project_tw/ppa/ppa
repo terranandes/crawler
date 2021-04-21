@@ -1,0 +1,21 @@
+main.py (Sync crawlering)
+time spend : ~24hrs
+
+main_async_httpx.py (Async crawlering)
+Web outstaning capibility is about ~245
+CFG1: #Too many retries
+stock_chunk = 2700
+info_chunk   = 1
+time spend : ~12hrs
+
+CFG2: 
+stock_chunk = 245
+info_chunk   = 1
+time spend :
+1:02:59.655978
+
+CFG2: 
+stock_chunk = 2
+info_chunk   = 123
+time spend :
+1:51:08.816047
