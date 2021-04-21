@@ -40,7 +40,7 @@ def upt_para(para, st, sy, ey) :
 async def get_stock_info_year(i, sy, ey, para_exep, st):
     global retry_interval
     #global client
-    print('start get_stock_info_year', i, sy, ey, st)
+    #print('start get_stock_info_year', i, sy, ey, st)
     para_qry = upt_para(para_exep, st, sy, ey)
     retry = True
     while retry:
@@ -54,8 +54,8 @@ async def get_stock_info_year(i, sy, ey, para_exep, st):
                 resp_exep.raise_for_status()  # REVISIT, need redo if received "Bad request'
                 retry = False
         except Exception as e:
-            print(e, url_exep, para_qry, 'Hello info?')
-            print(f'Well, let\'s take a rest: {retry_interval}s')
+            #print(e, url_exep, para_qry, 'Hello info?')
+            #print(f'Well, let\'s take a rest: {retry_interval}s')
             #time.sleep(retry_interval)
             retry_interval += 0.01
             await asyncio.sleep(retry_interval)
@@ -77,15 +77,14 @@ async def get_stock_info_year(i, sy, ey, para_exep, st):
         yrs = sd_resp['n']
     else:
         yrs = 0
-    if retry_interval >= 0.1 :
-        retry_interval -= 0.1
-    print('end get_stock_info_year', i, sy, ey, st)
+    if retry_interval >= 0.1 : retry_interval -= 0.1
+    #print('end get_stock_info_year', i, sy, ey, st)
     return [bao, bah, bal, yrs]
 
 async def get_stock_id_name(para_exep, st):
     global retry_interval
     #global client
-    print('start get_stock_id_name', st)
+    #print('start get_stock_id_name', st)
     para_qry = upt_para(para_exep, st, 2006, 2020)
     retry = True
     while retry:
@@ -99,8 +98,8 @@ async def get_stock_id_name(para_exep, st):
                 resp_exep.raise_for_status()  # REVISIT, need redo if received "Bad request'
                 retry = False
         except Exception as e:
-            print(e, url_exep, para_qry, 'Hello id?')
-            print(f'Well, let\'s take a rest: {retry_interval}s')
+            #print(e, url_exep, para_qry, 'Hello id?')
+            #print(f'Well, let\'s take a rest: {retry_interval}s')
             #time.sleep(retry_interval)
             retry_interval += 0.01
             await asyncio.sleep(retry_interval)
@@ -112,9 +111,8 @@ async def get_stock_id_name(para_exep, st):
     else:
         stn = None
         id_name = st
-    if retry_interval >= 0.1 :
-        retry_interval -= 0.1
-    print('end get_stock_id_name', st)
+    if retry_interval >= 0.1 : retry_interval -= 0.1
+    #print('end get_stock_id_name', st)
     return [st, stn, id_name]
 
 async def get_stock_info(i, para_exep, st) :
@@ -131,10 +129,10 @@ async def get_stock_info(i, para_exep, st) :
     offset = 0
     size = len(tasks)
     while True:
-        if offset > size:
-            break
-        result_chunk = await asyncio.gather(*tasks[offset:offset+info_chunk])
-        result.extend(result_chunk)
+        if offset > size : break
+        #result_chunk = await asyncio.gather(*tasks[offset:offset+info_chunk])
+        #result.extend(result_chunk)
+        result.extend(await asyncio.gather(*tasks[offset:offset+info_chunk]))
         offset += info_chunk
     #result = await asyncio.gather(task_get_stock_id_name, *tasks)
     #result.extend(result_chunk)
@@ -173,9 +171,10 @@ async def main(stock_list, para_exep):
     result_final = []
     #result_final.append(stock_header)
     for stock_entry in result:
-        stock_flt = list(flatten(stock_entry))
-        result_final.append(stock_flt)
-    print('Fianl result:', result_final)
+        #stock_flt = list(flatten(stock_entry))
+        #result_final.append(stock_flt)
+        result_final.append(list(flatten(stock_entry)))
+    #print('Fianl result:', result_final)
     return result_final
 
 def get_supportred_stock (url) :
@@ -186,12 +185,12 @@ def get_supportred_stock (url) :
     soup_page = soup(page, "html.parser")
     #print(soup_orig.prettify())
     for script in soup_page.find_all('script') :
-     if re.search("g_stocks", str(script.string)):
-        g_stocks = str(script.string)
-        break
+        if re.search("g_stocks", str(script.string)):
+            g_stocks = str(script.string)
+            break
     #print (g_stocks)
     stock_list = re.findall(':"(.+)",' ,g_stocks)
-    print(stock_list)
+    #print(stock_list)
     return stock_list
 
 if __name__ == '__main__':
@@ -201,27 +200,28 @@ if __name__ == '__main__':
     #User modifiable CFG, To be configured by getopt module
     #max_live_connect_httpx = 1 #None #5, max 10
     #max_connect_httpx = 1 #None #10, max 100
-    stock_chunk = 2700
-    info_chunk = 1
+    #outstanding number = stock_chunk * info_chunk, however web might support
+    stock_chunk = 245 # max 2622
+    info_chunk = 1 #(15+1)*15/2 + 1 = 120 + 1, 1 means extra header capture
     start_year_ub = 2021
     end_year_ub = 2022
     retry_interval = 1
 
     #User non-modifiable variable
-    rest_interval = stock_chunk * 0.02
+    rest_interval = stock_chunk * 0.001
     #limits = httpx.Limits(max_keepalive_connections=max_live_connect_httpx, max_connections=max_connect_httpx)
     #client = httpx.AsyncClient(limits=limits)
     url_orig = "https://www.moneycome.in/tool/compound_interest?stkCode=6533"
     url_exep = "https://www.moneycome.in/piggy/s/ci/calcStock"
-    para_exep = { "stkCode":"6533",
-                "principle":1000000,
-                "invAmtPerPeriod":60000,
-                "startYear":2006,
-                "endYear":2021,
-                "isDividendReinvestment":True,
-                "isCrashInvestment":False,
-                "crashThreshold":0.3,
-                "invAmtForCrash":60000}
+    para_exep = { "stkCode"                : "6533",
+                  "principle"              : 1000000,
+                  "invAmtPerPeriod"        : 60000,
+                  "startYear"              : 2006,
+                  "endYear"                : 2021,
+                  "isDividendReinvestment" : True,
+                  "isCrashInvestment"      : False,
+                  "crashThreshold"         : 0.3,
+                  "invAmtForCrash"         : 60000}
 
     #Get supported stock list
     stock_list = get_supportred_stock(url_orig)
@@ -236,25 +236,30 @@ if __name__ == '__main__':
     #  sd_l = []
 
     sd_l = []
-    stock_header = get_stock_header()
-    sd_l.append(stock_header) #get csv first row
-    print('Stock Header:' ,stock_header) #right result
+    #stock_header = get_stock_header()
+    #sd_l.append(stock_header) #get csv first row
+    #print('Stock Header:' ,stock_header) #right result
+    sd_l.append(get_stock_header()) #get csv first row
     offset = 0
     size = len(stock_list)
-    print('stock number:', size)
+    #print('stock number:', size)
     while True:
-        if offset > size:
-            break
-        sd_chunk = asyncio.run(main(stock_list[offset:offset+stock_chunk], para_exep))
-        sd_l.extend(sd_chunk)
+        if offset > size : break
+        #sd_chunk = asyncio.run(main(stock_list[offset:offset+stock_chunk], para_exep))
+        #sd_l.extend(sd_chunk)
+        sd_l.extend(asyncio.run(main(stock_list[offset:offset+stock_chunk], para_exep)))
         offset += stock_chunk
         time.sleep(rest_interval)
-        if retry_interval >= 1 :
-            retry_interval -= 1
+        if retry_interval >= 1 : retry_interval -= 1
+        if offset > size :
+            print (f'{dt.now()} : 100.00%')
+        else :
+            progress = (offset/size) * 100
+            print (f'{dt.now()} : {progress:>6.2f}%')
 
     #sd_l = asyncio.run(main(stock_list, para_exep))
 
-    print(sd_l)
+    #print(sd_l)
 
     # output JSON and CSV File
     # JSON & DICT format
@@ -271,15 +276,15 @@ if __name__ == '__main__':
     #  [...]
     # ]
     with open(fn_json, 'w', encoding='utf-8') as jsonFile :
-      json.dump(sd_l, jsonFile, indent=2, ensure_ascii=False)
+        json.dump(sd_l, jsonFile, indent=2, ensure_ascii=False)
 
     #CSV format
     #id name s2006e2007 s2006e2008 ... s2006e2020 s2007e2008 ...s2007e2020 .. s2019e2020
     fn_csv = 'stock_list.csv'
     with open(fn_csv, 'w', newline = '', encoding='utf-8') as csvFile :
-      csvWriter = csv.writer(csvFile)
-      for row in sd_l :
-        csvWriter.writerow(row)
+        csvWriter = csv.writer(csvFile)
+        for row in sd_l :
+            csvWriter.writerow(row)
       
     #Second Step
     #Data Analysis using Pandas
