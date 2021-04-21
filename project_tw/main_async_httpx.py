@@ -38,6 +38,7 @@ def upt_para(para, st, sy, ey) :
     return para_dup
 
 async def get_stock_info_year(i, sy, ey, para_exep, st):
+    global retry_interval
     #global client
     print('start get_stock_info_year', i, sy, ey, st)
     para_qry = upt_para(para_exep, st, sy, ey)
@@ -55,7 +56,9 @@ async def get_stock_info_year(i, sy, ey, para_exep, st):
         except Exception as e:
             print(e, url_exep, para_qry, 'Hello info?')
             print(f'Well, let\'s take a rest: {retry_interval}s')
-            time.sleep(retry_interval)
+            #time.sleep(retry_interval)
+            retry_interval += 0.01
+            await asyncio.sleep(retry_interval)
 
     sd_resp = json.loads(resp_exep.text)  # stock_dict response
     if 'buyAtOpening' in sd_resp:
@@ -74,10 +77,13 @@ async def get_stock_info_year(i, sy, ey, para_exep, st):
         yrs = sd_resp['n']
     else:
         yrs = 0
+    if retry_interval >= 0.1 :
+        retry_interval -= 0.1
     print('end get_stock_info_year', i, sy, ey, st)
     return [bao, bah, bal, yrs]
 
 async def get_stock_id_name(para_exep, st):
+    global retry_interval
     #global client
     print('start get_stock_id_name', st)
     para_qry = upt_para(para_exep, st, 2006, 2020)
@@ -95,7 +101,9 @@ async def get_stock_id_name(para_exep, st):
         except Exception as e:
             print(e, url_exep, para_qry, 'Hello id?')
             print(f'Well, let\'s take a rest: {retry_interval}s')
-            time.sleep(retry_interval)
+            #time.sleep(retry_interval)
+            retry_interval += 0.01
+            await asyncio.sleep(retry_interval)
 
     sd_resp = json.loads(resp_exep.text)  # stock_dict response
     if 'stkName' in sd_resp:
@@ -104,6 +112,8 @@ async def get_stock_id_name(para_exep, st):
     else:
         stn = None
         id_name = st
+    if retry_interval >= 0.1 :
+        retry_interval -= 0.1
     print('end get_stock_id_name', st)
     return [st, stn, id_name]
 
@@ -191,12 +201,14 @@ if __name__ == '__main__':
     #User modifiable CFG, To be configured by getopt module
     #max_live_connect_httpx = 1 #None #5, max 10
     #max_connect_httpx = 1 #None #10, max 100
-    stock_chunk = 60
+    stock_chunk = 2700
     info_chunk = 1
     start_year_ub = 2021
     end_year_ub = 2022
-    retry_interval = 60
+    retry_interval = 1
 
+    #User non-modifiable variable
+    rest_interval = stock_chunk * 0.02
     #limits = httpx.Limits(max_keepalive_connections=max_live_connect_httpx, max_connections=max_connect_httpx)
     #client = httpx.AsyncClient(limits=limits)
     url_orig = "https://www.moneycome.in/tool/compound_interest?stkCode=6533"
@@ -236,6 +248,9 @@ if __name__ == '__main__':
         sd_chunk = asyncio.run(main(stock_list[offset:offset+stock_chunk], para_exep))
         sd_l.extend(sd_chunk)
         offset += stock_chunk
+        time.sleep(rest_interval)
+        if retry_interval >= 1 :
+            retry_interval -= 1
 
     #sd_l = asyncio.run(main(stock_list, para_exep))
 
