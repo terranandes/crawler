@@ -122,8 +122,8 @@ async def get_stock_info(i, para_exep, st) :
     #task_get_stock_id_name = asyncio.create_task(get_stock_id_name(para_exep, st))
     tasks.append(get_stock_id_name(para_exep, st))
     #result.extend(get_stock_id_name(para_exep, st))
-    for sy in range(2006, start_year_ub):  # 2006~2020
-        for ey in range(2007, end_year_ub):  # 2007~2021
+    for sy in range(start_year_lb, start_year_ub):  # 2006~2020
+        for ey in range(end_year_lb, end_year_ub):  # 2007~2021
             if sy < ey :
                 tasks.append(get_stock_info_year(i, sy, ey, para_exep, st))
     offset = 0
@@ -142,8 +142,8 @@ async def get_stock_info(i, para_exep, st) :
 def get_stock_header():
     #print('start get_stock_header')
     stock_header = ['id', 'name', 'id_name']
-    for sy in range(2006, start_year_ub):  # 2006~2020
-        for ey in range(2007, end_year_ub):  # 2007~2021
+    for sy in range(start_year_lb, start_year_ub):  # 2006~2020
+        for ey in range(end_year_lb, end_year_ub):  # 2007~2021
             if sy < ey :
                 stock_header.append('s' + str(sy) + 'e' + str(ey) + 'bao')
                 stock_header.append('s' + str(sy) + 'e' + str(ey) + 'bah')
@@ -203,7 +203,9 @@ if __name__ == '__main__':
     #outstanding number = stock_chunk * info_chunk, however web might support
     stock_chunk = 245 # max 2622
     info_chunk = 1 #(15+1)*15/2 + 1 = 120 + 1, 1 means extra header capture
-    start_year_ub = 2021
+    start_year_ub = 2006
+    start_year_lb = 2007
+    end_year_lb = 2021
     end_year_ub = 2022
     retry_interval = 1
 
