@@ -201,11 +201,11 @@ if __name__ == '__main__':
     #max_live_connect_httpx = 1 #None #5, max 10
     #max_connect_httpx = 1 #None #10, max 100
     #outstanding number = stock_chunk * info_chunk, however web might support
-    stock_chunk = 245 # max 2622
+    stock_chunk = 239 # max 2622
     info_chunk = 1 #(15+1)*15/2 + 1 = 120 + 1, 1 means extra header capture
-    start_year_ub = 2006
-    start_year_lb = 2007
-    end_year_lb = 2021
+    start_year_lb = 2006
+    start_year_ub = 2021
+    end_year_lb = 2007
     end_year_ub = 2022
     retry_interval = 1
 
@@ -305,6 +305,7 @@ print('        `) `----`~~\           ')
 print('      -~ \  \'~-.   / ~-        ')
 print('       ~- `~-====-\ ~_ ~-      ')
 print('      ~ - ~ ~- ~ - ~ -         ')
+print('                               ')
 
 endtime = dt.now()
 print(endtime)

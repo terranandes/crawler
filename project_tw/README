@@ -1,5 +1,5 @@
-python3 main.py:            (sync  crawlering, time to complete: 24hr)
-python3 main_async_httpx.py (async crawlering, time to complete: 15 minx?)
+python3 main.py:            (sync  crawlering, time to complete:  ~24hrs)
+python3 main_async_httpx.py (async crawlering, time to complete: ~1.5hrs)
 
 to crawler all data from www.moneycome.in
 output:

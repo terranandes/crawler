@@ -175,6 +175,7 @@ print('        `) `----`~~\           ')
 print('      -~ \  \'~-.   / ~-        ')
 print('       ~- `~-====-\ ~_ ~-      ')
 print('      ~ - ~ ~- ~ - ~ -         ')
+print('                               ')
 
 endtime = dt.now()
 print(endtime)
