@@ -11,68 +11,90 @@ CFG1: #Too many retries
 stock_chunk = 2700
 info_chunk   = 1
 start_year_lb = 2006
-start_year_ub = 2020
+start_year_ub = 2021
 end_year_lb = 2007
 end_year_ub = 2022
 time spend : ~12hrs
 
+#Get all
 CFG2: 
 stock_chunk = 245
 info_chunk   = 1
 start_year_lb = 2006
-start_year_ub = 2020
+start_year_ub = 2021
 end_year_lb = 2007
 end_year_ub = 2022
 time spend :
-1:02:59.655978
+??????
 
 CFG3: 
 stock_chunk = 2
 info_chunk   = 123
 start_year_lb = 2006
-start_year_ub = 2020
+start_year_ub = 2021
 end_year_lb = 2007
 end_year_ub = 2022
 time spend :
-1:51:08.816047
+??????
 
-CFG4: (The Best for sufficiency)
+CFG2: (The best for all)
+stock_chunk = 239 (2622/11)
+info_chunk   = 1
+start_year_lb = 2006
+start_year_ub = 2021
+end_year_lb = 2007
+end_year_ub = 2022
+time spend :
+??????
+
+CFG2: (The best for all)
+stock_chunk = 239 (2622/11)
+info_chunk   = 1
+start_year_lb = 2006
+start_year_ub = 2021
+end_year_lb = 2007
+end_year_ub = 2022
+time spend :
+?????
+
+#Get sufficiency
+CFG4: 
 stock_chunk = 239 (2622/11)
 info_chunk   = 1
 start_year_lb = 2006
 start_year_ub = 2007
-end_year_lb = 2021
+end_year_lb = 2007
 end_year_ub = 2022
 time spend :
-0:02:23.759690
+0:12:49.799099
 
-CFG4: 
+CFG4: (The Best for sufficiency)
 stock_chunk = 245
 info_chunk   = 1
 start_year_lb = 2006
 start_year_ub = 2007
-end_year_lb = 2021
+end_year_lb = 2007
 end_year_ub = 2022
 time spend :
-0:03:11.242397
+0:11:58.261872
 
 CFG4: 
 stock_chunk = 263
 info_chunk   = 1
 start_year_lb = 2006
 start_year_ub = 2007
-end_year_lb = 2021
-end_year_ub = 2022
-time spend :
-0:02:44.366225
-
-CFG2: (The best for all)
-stock_chunk = 239
-info_chunk   = 1
-start_year_lb = 2006
-start_year_ub = 2020
 end_year_lb = 2007
 end_year_ub = 2022
 time spend :
-1:27:50.210369
+0:12:29.221714
+
+CFG4: 
+stock_chunk = 2
+info_chunk   = 123
+start_year_lb = 2006
+start_year_ub = 2007
+end_year_lb = 2007
+end_year_ub = 2022
+time spend :
+0:17:03.084048
 
