@@ -85,7 +85,7 @@ async def get_stock_id_name(para_exep, st):
     global retry_interval
     #global client
     #print('start get_stock_id_name', st)
-    para_qry = upt_para(para_exep, st, 2006, 2020)
+    para_qry = upt_para(para_exep, st, start_year_lb, end_year_ub)
     retry = True
     while retry:
         try:
@@ -105,15 +105,19 @@ async def get_stock_id_name(para_exep, st):
             await asyncio.sleep(retry_interval)
 
     sd_resp = json.loads(resp_exep.text)  # stock_dict response
+    if 'n' in sd_resp:
+        yrs = sd_resp['n']
+    else:
+        yrs = 0
     if 'stkName' in sd_resp:
         stn = sd_resp['stkName']
-        id_name = st + '-' + stn
+        id_name_yrs = st + '-' + stn + '-' + str(yrs)
     else:
         stn = None
-        id_name = st
+        id_name_yrs = st + '-' + str(yrs)
     if retry_interval >= 0.1 : retry_interval -= 0.1
     #print('end get_stock_id_name', st)
-    return [st, stn, id_name]
+    return [st, stn, id_name_yrs]
 
 async def get_stock_info(i, para_exep, st) :
     #print('start get_stock_info', st)
@@ -141,7 +145,7 @@ async def get_stock_info(i, para_exep, st) :
 
 def get_stock_header():
     #print('start get_stock_header')
-    stock_header = ['id', 'name', 'id_name']
+    stock_header = ['id', 'name', 'id_name_yrs']
     for sy in range(start_year_lb, start_year_ub):  # 2006~2020
         for ey in range(end_year_lb, end_year_ub):  # 2007~2021
             if sy < ey :
@@ -266,8 +270,8 @@ if __name__ == '__main__':
     # output JSON and CSV File
     # JSON & DICT format
     # [[6533,                #id
-    #  晶心科,                #name
-    #  6533-晶心科            #id_name
+    #  晶心科,               #name
+    #  6533-晶心科-5         #id_name_lastingyears
     #  26.7,                 #s2006e2007
     #  .................,
     #  xxxx,                 #s2019e2020
