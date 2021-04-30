@@ -14,9 +14,10 @@ In some cases, some modules like pandas can't be installed or might run into tro
 Owner of Taiwan: Terran (https://github.com/terranandes)
 Main Web of crawler : https://www.moneycome.in/tool/compound_interest
 Status of project_tw:
-  -- Data collected successfully. Outputs (CSV, JSON) ready as well.
-  -- Data being analyzed using pandas.
-  -- Tool for presentation of animation is ready. ( https://app.flourish.studio/visualisation/5774508/edit? )
+  - Data collected successfully. Outputs (CSV, JSON) ready as well.
+  - Data being analyzed using pandas.
+  - module BAR-CHART-RACE for  presentation of animation is ready ( https://pypi.org/project/bar-chart-race/ )
+    ~ Alternative tool is ready. ( https://app.flourish.studio/visualisation/5774508/edit? )
 
 Owner of China:
 TBD
@@ -41,7 +42,8 @@ https://youtu.be/ZMjhBB17KVY
 https://youtu.be/MQH4Rau_F_A
 Pandas:
 https://youtu.be/5QZqzKCDCQ4
-NumPy & Pandas:
+NumPy & Pandas & Data Analysis:
+https://wizardforcel.gitbooks.io/pyda-2e/content/ (most important)
 https://www.jianshu.com/p/04d180d90a3f
 https://www.jianshu.com/p/62524f4c240e
 
@@ -62,8 +64,6 @@ https://pypi.org/project/httpx/
 golden example for nested httpx request:
 https://github.com/terranfund/exercise_docs/blob/master/test/asyncio_gather_high_level_golden_httptx.py
 https://towardsdatascience.com/supercharge-pythons-requests-with-async-io-httpx-75b4a5da52d7
-
-
 
 In English:
 Pandas:
@@ -116,8 +116,8 @@ Output:
     Demo:
     https://bit.ly/39WtfP1
 
-Shared directoy is moved to https://github.com/terranfund/exercise_docs.
+Shared folders are moved to https://github.com/terranfund/exercise_docs.
 
 Contact us:
-  - Owner:     Terran  (TBD)
+  - Owner:     Terran  ( terranandes@gmail.com )
   - Co-worker: Rodrigo ( jf20704jf@gmail.com )
