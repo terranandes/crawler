@@ -119,5 +119,5 @@ Output:
 Shared directoy is moved to https://github.com/terranfund/exercise_docs.
 
 Contact us:
-  Owner:     Terran  (TBD)
-  Co-worker: Rodrigo ( jf20704jf@gmail.com )
+  - Owner:     Terran  (TBD)
+  - Co-worker: Rodrigo ( jf20704jf@gmail.com )
