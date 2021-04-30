@@ -1,4 +1,3 @@
-
 Project clawler aims to 
 provide sorted expansion rate(AKA ROI) of each stock laid in following countries using python or perl to fetch data on internet.
   - Taiwan
@@ -61,9 +60,9 @@ https://ithelp.ithome.com.tw/articles/10199385
 
 httpx:
 https://pypi.org/project/httpx/
+https://towardsdatascience.com/supercharge-pythons-requests-with-async-io-httpx-75b4a5da52d7
 golden example for nested httpx request:
 https://github.com/terranfund/exercise_docs/blob/master/test/asyncio_gather_high_level_golden_httptx.py
-https://towardsdatascience.com/supercharge-pythons-requests-with-async-io-httpx-75b4a5da52d7
 
 In English:
 Pandas:
@@ -110,7 +109,6 @@ Output:
     with statistical analysis by module pandas or even AI
   - BAR-CHART-RACE animations by native python module to engage audience
     https://pypi.org/project/bar-chart-race/
-
   - Or alternaive by outsourcing from Web
     https://flourish.studio/
     Demo:
