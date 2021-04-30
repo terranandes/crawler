@@ -1,3 +1,4 @@
+
 Project clawler aims to 
 provide sorted expansion rate(AKA ROI) of each stock laid in following countries using python or perl to fetch data on internet.
   - Taiwan
@@ -89,6 +90,12 @@ MAC:
   - iTerm2+Zim+Powerlevel10k+Homebrew (Please google)
   - install Miniconda on Homebrew
     - https://formulae.brew.sh/cask/miniconda#default
+  - other way to install Miniconda(use MAC's terminal)
+    - https://conda.io/projects/conda/en/latest/user-guide/install/macos.html
+    - Step 1: download bash file
+    - Step 2: verify installer hash ( Command: shasum -a 256 /path/to/your/file/Miniconda3-<LatestVersion>-MacOSX-x86_64.sh )
+    - Step 3: Install ( Command: bash /path/to/your/file/Miniconda3-<LatestVersion>-MacOSX-x86_64.sh )
+    - Step 4: Test installation: Re-open terminal and type "conda list"
   - install modules like pandas, which fail in some MAC(M1) pip3 ...
     - conda install pandas
 
@@ -110,3 +117,7 @@ Output:
     https://bit.ly/39WtfP1
 
 Shared directoy is moved to https://github.com/terranfund/exercise_docs.
+
+Contact us:
+  Owner:     Terran  (TBD)
+  Co-worker: Rodrigo ( jf20704jf@gmail.com )
