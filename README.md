@@ -87,6 +87,10 @@ https://docs.conda.io/en/latest/miniconda.html#linux-installers
 
 MAC:
   - iTerm2+Zim+Powerlevel10k+Homebrew (Please google)
+    - iTerm2: https://iterm2.com (Download, and probably need to install pip3, just follow prompt)
+    - Zim + Powerlevel10k: https://dwye.dev/post/zsh-zim-powerlevel10k/
+    - Homebrew: https://dwye.dev/post/zsh-zim-powerlevel10k/(may occur warning on MAC-M1) 
+      - Solution: https://stackoverflow.com/questions/65487249/getting-a-warning-when-installing-homebrew-on-macos-big-sur-m1-chip
   - install Miniconda on Homebrew
     - https://formulae.brew.sh/cask/miniconda#default
   - other way to install Miniconda(use MAC's terminal)
