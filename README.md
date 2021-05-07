@@ -26,13 +26,16 @@ TBD
 
 Python Tutorial:
 https://www.w3schools.com/python/python_intro.asp
+https://www.geeksforgeeks.org/python-programming-language/
+https://www.programiz.com/python-programming
+
 The Python Package Index
 https://pypi.org/
 
 GIT learning resource:
 https://learngitbranching.js.org/
 
-Crawler learing resouce:
+Crawler learning resouce:
 In Chinese:
 https://mofanpy.com/tutorials/data-manipulation/scraping/
 https://youtu.be/IMOUf4BYTG8 <==critial technique to react with JSS frontend(AJAX)
@@ -75,6 +78,8 @@ https://pypi.org/project/requests/
 https://pypi.org/project/beautifulsoup4/
 https://pypi.org/project/selenium/
 https://pypi.org/project/pandas/
+https://pypi.org/project/bar-chart-race/
+https://pypi.org/project/httpx/
 
 Unix ENV for
 Windows:
