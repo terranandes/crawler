@@ -26,6 +26,7 @@ end_year_lb = 2007
 end_year_ub = 2022
 time spend :
 1:29:09.338138
+1:08:48.485324
 
 CFG3: 
 stock_chunk = 2

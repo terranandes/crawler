@@ -64,19 +64,19 @@ async def get_stock_info_year(i, sy, ey, para_exep, st):
     if 'buyAtOpening' in sd_resp:
         bao = float(sd_resp['buyAtOpening']['yroi'].replace(' %', ''))
     else:
-        bao = 0
+        bao = None
     if 'buyAtHighest' in sd_resp:
         bah = float(sd_resp['buyAtHighest']['yroi'].replace(' %', ''))
     else:
-        bah = 0
+        bah = None
     if 'buyAtLowest' in sd_resp:
         bal = float(sd_resp['buyAtLowest']['yroi'].replace(' %', ''))
     else:
-        bal = 0
+        bal = None
     if 'n' in sd_resp:
         yrs = sd_resp['n']
     else:
-        yrs = 0
+        yrs = None
     if retry_interval >= 0.1 : retry_interval -= 0.1
     #print('end get_stock_info_year', i, sy, ey, st)
     return [bao, bah, bal, yrs]
@@ -108,7 +108,7 @@ async def get_stock_id_name(para_exep, st):
     if 'n' in sd_resp:
         yrs = sd_resp['n']
     else:
-        yrs = 0
+        yrs = None
     if 'stkName' in sd_resp:
         stn = sd_resp['stkName']
         id_name_yrs = st + '-' + stn + '-' + str(yrs)
@@ -205,7 +205,7 @@ if __name__ == '__main__':
     #max_live_connect_httpx = 1 #None #5, max 10
     #max_connect_httpx = 1 #None #10, max 100
     #outstanding number = stock_chunk * info_chunk, however web might support
-    stock_chunk = 263 # max 2622
+    stock_chunk = 245 # max 2622
     info_chunk = 1 #(15+1)*15/2 + 1 = 120 + 1, 1 means extra header capture
     start_year_lb = 2006
     start_year_ub = 2021
