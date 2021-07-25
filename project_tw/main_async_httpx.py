@@ -208,7 +208,7 @@ if __name__ == '__main__':
     stock_chunk = 245 # max 2622
     info_chunk = 1 #(15+1)*15/2 + 1 = 120 + 1, 1 means extra header capture
     start_year_lb = 2006
-    start_year_ub = 2021
+    start_year_ub = 2007
     end_year_lb = 2007
     end_year_ub = 2022
     retry_interval = 1

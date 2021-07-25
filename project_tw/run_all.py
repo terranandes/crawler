@@ -1,7 +1,13 @@
 import subprocess
 #gathering process to complete data
-#subprocess.run(['python3', 'main.py', '2006'])
-#subprocess.run(['python3', 'main.py', '2007'])
-#subprocess.run(['python3', 'main.py', '2008'])
-#subprocess.run(['python3', 'main.py', '2009'])
-#subprocess.run(['python3', 'main.py', '20010'])
+
+#Async gathering data
+subprocess.run(['python3', 'main_async_httpx.py'])
+
+subprocess.run('cp -rf stock_list.csv stock_s2006e2021_unfiltered.csv', shell=True)
+
+#Filtering data
+subprocess.run(['python3', 'pandas_stock.py'])
+
+#Predicting step to next
+
