@@ -1,4 +1,3 @@
-(Test Push)
 Project clawler aims to 
 provide sorted expansion rate(AKA ROI) of each stock laid in following countries using python or perl to fetch data on internet.
   - Taiwan
