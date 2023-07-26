@@ -127,7 +127,7 @@ async def get_stock_info(i, para_exep, st) :
     tasks.append(get_stock_id_name(para_exep, st))
     #result.extend(get_stock_id_name(para_exep, st))
     for sy in range(start_year_lb, start_year_ub):  # 2006~2020
-        for ey in range(end_year_lb, end_year_ub):  # 2007~2021
+        for ey in range(end_year_lb, end_year_ub):  # 2007~2023
             if sy < ey :
                 tasks.append(get_stock_info_year(i, sy, ey, para_exep, st))
     offset = 0
@@ -147,7 +147,7 @@ def get_stock_header():
     #print('start get_stock_header')
     stock_header = ['id', 'name', 'id_name_yrs']
     for sy in range(start_year_lb, start_year_ub):  # 2006~2020
-        for ey in range(end_year_lb, end_year_ub):  # 2007~2021
+        for ey in range(end_year_lb, end_year_ub):  # 2007~2023
             if sy < ey :
                 stock_header.append('s' + str(sy) + 'e' + str(ey) + 'bao')
                 stock_header.append('s' + str(sy) + 'e' + str(ey) + 'bah')
@@ -210,7 +210,7 @@ if __name__ == '__main__':
     start_year_lb = 2006
     start_year_ub = 2007
     end_year_lb = 2007
-    end_year_ub = 2022
+    end_year_ub = 2024
     retry_interval = 1
 
     #User non-modifiable variable
@@ -223,7 +223,7 @@ if __name__ == '__main__':
                   "principle"              : 1000000,
                   "invAmtPerPeriod"        : 60000,
                   "startYear"              : 2006,
-                  "endYear"                : 2021,
+                  "endYear"                : 2023,
                   "isDividendReinvestment" : True,
                   "isCrashInvestment"      : False,
                   "crashThreshold"         : 0.3,
