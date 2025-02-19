@@ -127,7 +127,7 @@ async def get_stock_info(i, para_exep, st) :
     tasks.append(get_stock_id_name(para_exep, st))
     #result.extend(get_stock_id_name(para_exep, st))
     for sy in range(start_year_lb, start_year_ub):  # 2006~2020
-        for ey in range(end_year_lb, end_year_ub):  # 2007~2023
+        for ey in range(end_year_lb, end_year_ub):  # 2007~2024
             if sy < ey :
                 tasks.append(get_stock_info_year(i, sy, ey, para_exep, st))
     offset = 0
@@ -147,7 +147,7 @@ def get_stock_header():
     #print('start get_stock_header')
     stock_header = ['id', 'name', 'id_name_yrs']
     for sy in range(start_year_lb, start_year_ub):  # 2006~2020
-        for ey in range(end_year_lb, end_year_ub):  # 2007~2023
+        for ey in range(end_year_lb, end_year_ub):  # 2007~2024
             if sy < ey :
                 stock_header.append('s' + str(sy) + 'e' + str(ey) + 'bao')
                 stock_header.append('s' + str(sy) + 'e' + str(ey) + 'bah')
@@ -205,16 +205,18 @@ if __name__ == '__main__':
     #max_live_connect_httpx = 1 #None #5, max 10
     #max_connect_httpx = 1 #None #10, max 100
     #outstanding number = stock_chunk * info_chunk, however web might support
-    stock_chunk = 245 # max 2622
+    #stock_chunk = 245 # max 2622 #most efficient
+    stock_chunk = 33 # max 2622
     info_chunk = 1 #(15+1)*15/2 + 1 = 120 + 1, 1 means extra header capture
     start_year_lb = 2006
     start_year_ub = 2007
     end_year_lb = 2007
-    end_year_ub = 2024
+    end_year_ub = 2025
     retry_interval = 1
 
     #User non-modifiable variable
-    rest_interval = stock_chunk * 0.001
+    #rest_interval = stock_chunk * 0.001
+    rest_interval = stock_chunk * 0.01
     #limits = httpx.Limits(max_keepalive_connections=max_live_connect_httpx, max_connections=max_connect_httpx)
     #client = httpx.AsyncClient(limits=limits)
     url_orig = "https://www.moneycome.in/tool/compound_interest?stkCode=6533"
@@ -223,7 +225,7 @@ if __name__ == '__main__':
                   "principle"              : 1000000,
                   "invAmtPerPeriod"        : 60000,
                   "startYear"              : 2006,
-                  "endYear"                : 2023,
+                  "endYear"                : 2024,
                   "isDividendReinvestment" : True,
                   "isCrashInvestment"      : False,
                   "crashThreshold"         : 0.3,

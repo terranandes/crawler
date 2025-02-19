@@ -4,23 +4,23 @@ import re
 #USER modifiable CFG
 lasting_yrs = 3
 std_grd = 20
-df = pd.read_csv('stock_list_s2006e2023_unfiltered.csv')
+df = pd.read_csv('stock_list_s2006e2024_unfiltered.csv')
 
 #drop column bah and bal
 drop_roi_type = ['bah', 'bal']
-drop_roi_cl = ['s'+'2006'+'e'+str(ey)+ roit for ey in range(2007, 2024) for roit in drop_roi_type]
+drop_roi_cl = ['s'+'2006'+'e'+str(ey)+ roit for ey in range(2007, 2025) for roit in drop_roi_type]
 df2 = df.drop(drop_roi_cl, axis=1)
 
 #drop column unused yrs
-drop_yrs_cl = ['s'+'2006'+'e'+str(ey)+'yrs' for ey in range(2007, 2023)]
+drop_yrs_cl = ['s'+'2006'+'e'+str(ey)+'yrs' for ey in range(2007, 2024)]
 df3 = df2.drop(drop_yrs_cl, axis=1)
 
 #Filter stock with lasting years > lasting_yrs
-df4 = df3[df3.s2006e2023yrs > lasting_yrs]
+df4 = df3[df3.s2006e2024yrs > lasting_yrs]
 
 
-#sorted by 's2006e2023bao' , TBD with variable
-df5=df4.sort_values(by='s2006e2023bao', ascending=False)
+#sorted by 's2006e2024bao' , TBD with variable
+df5=df4.sort_values(by='s2006e2024bao', ascending=False)
 
 #filter valid stock info only
 vslist = []
@@ -60,5 +60,5 @@ for stk3 in df7.index:
 
 df8 = df7[vslist_3]
 
-df8.to_csv('stock_list_s2006e2023_filtered.csv')
+df8.to_csv('stock_list_s2006e2024_filtered.csv')
 
