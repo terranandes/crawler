@@ -304,14 +304,14 @@ if __name__ == '__main__':
     #bar_chart_race
     #Todo End
 
-print('                  _            ')
-print('                /`o\__         ')
-print('         ,_     \ _.==\'        ')
-print('        `) `----`~~\           ')
-print('      -~ \  \'~-.   / ~-        ')
-print('       ~- `~-====-\ ~_ ~-      ')
-print('      ~ - ~ ~- ~ - ~ -         ')
-print('                               ')
+print(r'                  _            ')
+print(r'                /`o\__         ')
+print(r'         ,_     \ _.==\'       ')
+print(r'        `) `----`~~\           ')
+print(r'      -~ \  \'~-.   / ~-       ')
+print(r'       ~- `~-====-\ ~_ ~-      ')
+print(r'      ~ - ~ ~- ~ - ~ -         ')
+print(r'                               ')
 
 endtime = dt.now()
 print(endtime)
