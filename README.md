@@ -86,6 +86,7 @@ Generally, we might learn Python using JupyterNotebook(or JupyterLab) from conda
 And furthur python modules are owned by Conda.
 In M1, module like panda cannot be installed via default pip or homebrew pip.
 For concern of disk usage, you can start with Miniconda instead of Anaconda.
+Conda is needed to install the following python packages in Windows Ubuntu ENV!!!
 
 Needed python packages:
 === requests & selenium & beautifulsoup4 & pandas ===
