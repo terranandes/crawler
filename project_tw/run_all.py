@@ -1,3 +1,4 @@
+#! /root/miniconda3/bin/python3
 import subprocess
 #gathering process to complete data
 
