@@ -72,23 +72,29 @@ Pandas:
 https://www.youtube.com/watch?v=vmEHCJofslg
 https://www.w3schools.com/python/pandas/default.asp
 
-Needed python packages:
-=== requests & selenium & beautifulsoup4 & pandas ===
-https://pypi.org/project/requests/
-https://pypi.org/project/beautifulsoup4/
-https://pypi.org/project/selenium/
-https://pypi.org/project/pandas/
-https://pypi.org/project/bar-chart-race/
-https://pypi.org/project/httpx/
-
 Unix ENV for
 Windows:
 Ubuntu on Windows Store
 
-Miniconda on Windows:
-https://docs.conda.io/en/latest/miniconda.html#windows-installers
+#Miniconda on Windows:
+#https://docs.conda.io/en/latest/miniconda.html#windows-installers
 Miniconda on Windows Ubuntu:
 https://docs.conda.io/en/latest/miniconda.html#linux-installers
+
+Why Conda?
+Generally, we might learn Python using JupyterNotebook(or JupyterLab) from conda more quickly.
+And furthur python modules are owned by Conda.
+In M1, module like panda cannot be installed via default pip or homebrew pip.
+For concern of disk usage, you can start with Miniconda instead of Anaconda.
+
+Needed python packages:
+=== requests & selenium & beautifulsoup4 & pandas ===
+https://pypi.org/project/requests/
+https://pypi.org/project/beautifulsoup4/
+https://pypi.org/project/httpx/
+https://pypi.org/project/pandas/
+https://pypi.org/project/selenium/
+https://pypi.org/project/bar-chart-race/
 
 MAC:
   - iTerm2+Zim+Powerlevel10k+Homebrew (Please google)
@@ -106,12 +112,6 @@ MAC:
     - Step 4: Test installation: Re-open terminal and type "conda list"
   - install modules like pandas, which fail in some MAC(M1) pip3 ...
     - conda install pandas
-
-Why Conda?
-Generally, we might learn Python using JupyterNotebook(or JupyterLab) from conda more quickly.
-And furthur python modules are owned by Conda.
-In M1, module like panda cannot be installed via default pip or homebrew pip.
-For concern of disk usage, you can start with Miniconda instead of Anaconda.
 
 Output:
   - A CSV, A JSON file to present expansion rate of each stock
