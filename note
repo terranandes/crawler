@@ -1,0 +1,181 @@
+波動率（Volatility）在數學和程式設計（如Python）中的應用，主要出現在金融數學、統計學與風險管理中，常用的計算公式與原理有以下幾個：
+
+歷史波動率（Historical Volatility）
+這是根據資產價格的歷史數據計算得出的波動率，通常用資產價格的對數報酬率（log returns）來計算標準差。公式為：
+
+σ= 
+N−1
+1
+​
+  
+i=1
+∑
+N
+​
+ (r 
+i
+​
+ − 
+r
+ˉ
+ ) 
+2
+ 
+​
+ 
+其中，r 
+i
+​
+ =ln 
+P 
+i−1
+​
+ 
+P 
+i
+​
+ 
+​
+  是第 i 期的對數報酬率， 
+r
+ˉ
+  是平均對數報酬率，N 是資料點數。
+
+隱含波動率（Implied Volatility）
+從期權價格反推得到的波動率，通常使用Black-Scholes模型，透過反向數值解法求得。
+
+波動率的年化
+若計算的是日資料波動率，要轉成年化波動率，一般會乘以平方根交易日數：
+
+σ 
+annual
+​
+ =σ 
+daily
+​
+ × 
+T
+​
+ 
+其中 T 是一年交易日數（如252天）。
+
+GARCH模型（Generalized Autoregressive Conditional Heteroskedasticity）
+這是用來估計波動率隨時間變化的統計模型，尤適合捕捉金融時間序列的集群波動性。
+
+在Python中，主要工具與套件及其對應方法：
+
+利用numpy計算對數報酬率與標準差來得到歷史波動率。
+pandas用於時間序列資料處理。
+arch套件可用來估計GARCH模型波動率。
+scipy.optimize可用於隱含波動率數值求解。
+簡單示範計算歷史波動率的Python程式範例：
+
+copy
+download
+import numpy as np
+import pandas as pd
+
+# 假設有每日收盤價data (ndarray 或 pandas Series)
+prices = pd.Series([100, 101, 102, 100, 98, 97])
+
+# 計算對數報酬率
+log_returns = np.log(prices / prices.shift(1)).dropna()
+
+# 計算日波動率（標準差）
+daily_volatility = log_returns.std()
+
+# 年化波動率（假設一年252個交易日）
+annual_volatility = daily_volatility * np.sqrt(252)
+
+print("Annualized volatility:", annual_volatility)
+
+波動率（Volatility）在數學和程式設計（如Python）中的應用，主要出現在金融數學、統計學與風險管理中，常用的計算公式與原理有以下幾個：
+
+歷史波動率（Historical Volatility）
+這是根據資產價格的歷史數據計算得出的波動率，通常用資產價格的對數報酬率（log returns）來計算標準差。公式為：
+
+σ= 
+N−1
+1
+​
+  
+i=1
+∑
+N
+​
+ (r 
+i
+​
+ − 
+r
+ˉ
+ ) 
+2
+ 
+​
+ 
+其中，r 
+i
+​
+ =ln 
+P 
+i−1
+​
+ 
+P 
+i
+​
+ 
+​
+  是第 i 期的對數報酬率， 
+r
+ˉ
+  是平均對數報酬率，N 是資料點數。
+
+隱含波動率（Implied Volatility）
+從期權價格反推得到的波動率，通常使用Black-Scholes模型，透過反向數值解法求得。
+
+波動率的年化
+若計算的是日資料波動率，要轉成年化波動率，一般會乘以平方根交易日數：
+
+σ 
+annual
+​
+ =σ 
+daily
+​
+ × 
+T
+​
+ 
+其中 T 是一年交易日數（如252天）。
+
+GARCH模型（Generalized Autoregressive Conditional Heteroskedasticity）
+這是用來估計波動率隨時間變化的統計模型，尤適合捕捉金融時間序列的集群波動性。
+
+在Python中，主要工具與套件及其對應方法：
+
+利用numpy計算對數報酬率與標準差來得到歷史波動率。
+pandas用於時間序列資料處理。
+arch套件可用來估計GARCH模型波動率。
+scipy.optimize可用於隱含波動率數值求解。
+簡單示範計算歷史波動率的Python程式範例：
+
+copy
+download
+import numpy as np
+import pandas as pd
+
+# 假設有每日收盤價data (ndarray 或 pandas Series)
+prices = pd.Series([100, 101, 102, 100, 98, 97])
+
+# 計算對數報酬率
+log_returns = np.log(prices / prices.shift(1)).dropna()
+
+# 計算日波動率（標準差）
+daily_volatility = log_returns.std()
+
+# 年化波動率（假設一年252個交易日）
+annual_volatility = daily_volatility * np.sqrt(252)
+
+print("Annualized volatility:", annual_volatility)
