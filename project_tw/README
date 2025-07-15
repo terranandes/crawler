@@ -1,3 +1,7 @@
+run_all.py end_year
+for example:
+run_all.py 2025
+
 python3 main.py:            (sync  crawlering, time to complete:  ~24hrs)
 python3 main_async_httpx.py (async crawlering, time to complete: ~1.5hrs)
 
