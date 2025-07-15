@@ -11,6 +11,7 @@ import bar_chart_race as bcr
 import pandas as pd
 import getopt
 import subprocess
+import sys
 #import multiprocessing
 #import threading
 import asyncio
@@ -199,6 +200,22 @@ def get_supportred_stock (url) :
     return stock_list
 
 if __name__ == '__main__':
+    help_msg ='\
+Usage: main_async_httpx.py [end_year]\n\
+For example:\n\
+main_async_httpx.py 2025\
+'
+    end_year_in = 2025
+    if (len(sys.argv) > 1 and sys.argv[1] == '-h') or len(sys.argv) > 2:
+        print(help_msg)
+        exit()
+
+    if len(sys.argv) == 2:
+        try:
+            end_year_in = int(sys.argv[1])
+        except:
+            print("Input end_year is not a valid integer!")
+
     starttime = dt.now()
     print(starttime)
     #initialize variable
@@ -212,7 +229,7 @@ if __name__ == '__main__':
     start_year_lb = 2006
     start_year_ub = 2007
     end_year_lb = 2007
-    end_year_ub = 2026
+    end_year_ub = end_year_in + 1
     retry_interval = 1
 
     #User non-modifiable variable
