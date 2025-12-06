@@ -1,4 +1,4 @@
-#! /root/miniconda3/bin/python3
+#! ../.venv/bin/python3
 import sys
 import subprocess
 #gathering process to complete data
@@ -21,13 +21,13 @@ if len(sys.argv) == 2:
         print("Input end_year is not a valid integer!")
 
 #Async gathering data
-subprocess.run(['python3', 'main_async_httpx.py', str(end_year_in)])
+subprocess.run(['python3', 'project_tw/main_async_httpx.py', str(end_year_in)])
 
 subprocess.run('rm -f stock_list_s2006e'+str(end_year_in)+'_unfiltered.csv', shell=True)
 subprocess.run('cp -f stock_list.csv stock_list_s2006e'+str(end_year_in)+'_unfiltered.csv', shell=True)
 
 #Filtering data
-subprocess.run(['python3', 'pandas_stock.py', str(end_year_in)])
+subprocess.run(['python3', 'project_tw/pandas_stock.py', str(end_year_in)])
 
 #Predicting step to next
 

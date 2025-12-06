@@ -1,3 +1,4 @@
+#! ../.venv/bin/python3
 import requests as reqs
 import json
 import csv

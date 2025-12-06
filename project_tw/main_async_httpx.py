@@ -1,4 +1,4 @@
-#! /root/miniconda3/bin/python3
+#! ../.venv/bin/python3
 import requests as reqs
 import json
 import csv
