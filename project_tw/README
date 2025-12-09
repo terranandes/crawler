@@ -14,6 +14,7 @@ plot.py: TBD
 to plot a readable animation
 
 TBD: (prioritized)
+  -- Fix the bug when running run_all.py 2006
   -- Async Crawlering using asyncio and httpx (done)
   -- Pandas filtering (data analysis) for a sensible result
   -- Serialized using bar-chart-race
