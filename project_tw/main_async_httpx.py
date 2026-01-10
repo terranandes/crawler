@@ -7,7 +7,7 @@ import time
 import getopt
 from datetime import datetime as dt
 from bs4 import BeautifulSoup as soup
-import bar_chart_race as bcr
+#import bar_chart_race as bcr
 import pandas as pd
 import getopt
 import subprocess
@@ -311,7 +311,7 @@ main_async_httpx.py 2025\
         csvWriter = csv.writer(csvFile)
         for row in sd_l :
             csvWriter.writerow(row)
-      
+
     #Second Step
     #Data Analysis using Pandas
     #Todo begin
