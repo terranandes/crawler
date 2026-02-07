@@ -4,37 +4,46 @@ import pandas as pd
 import re
 
 help_msg ='\
-Usage: pandas_stock.py [end_year]\n\
+Usage: pandas_stock.py [start_year] [end_year]\n\
 For example:\n\
-pandas_stock.py 2025\
+pandas_stock.py 2010 2026\
 '
-end_year_in = 2025
-if (len(sys.argv) > 1 and sys.argv[1] == '-h') or len(sys.argv) > 2:
+
+end_year_in = 2010
+end_year_in = 2026
+
+if (len(sys.argv) > 1 and sys.argv[1] == '-h') or len(sys.argv) > 3:
     print(help_msg)
     exit()
 
 if len(sys.argv) == 2:
     try:
-        end_year_in = int(sys.argv[1])
+        start_year_in = int(sys.argv[1])
+    except:
+        print("Input start_year is not a valid integer!")
+
+if len(sys.argv) == 3:
+    try:
+        end_year_in = int(sys.argv[2])
     except:
         print("Input end_year is not a valid integer!")
 
 #USER modifiable CFG
 lasting_yrs = 3
 std_grd = 20
-df = pd.read_csv('stock_list_s2006e'+str(end_year_in)+'_unfiltered.csv')
+df = pd.read_csv(f'stock_list_s{start_year_in}e{end_year_in}_unfiltered.csv')
 
 #drop column bah and bal
 drop_roi_type = ['bah', 'bal']
-drop_roi_cl = ['s'+'2006'+'e'+str(ey)+ roit for ey in range(2007, end_year_in+1) for roit in drop_roi_type]
+drop_roi_cl = [f's{start_year_in}e{ey}{roit}' for ey in range(start_year_in+1, end_year_in+1) for roit in drop_roi_type]
 df2 = df.drop(drop_roi_cl, axis=1)
 
 #drop column unused yrs
-drop_yrs_cl = ['s'+'2006'+'e'+str(ey)+'yrs' for ey in range(2007, end_year_in)]
+drop_yrs_cl = [f's{start_year_in}e{ey}yrs' for ey in range(start_year_in+1, end_year_in)]
 df3 = df2.drop(drop_yrs_cl, axis=1)
 
 #Filter stock with lasting years > lasting_yrs
-df3_filtering_col = 's2006e'+str(end_year_in)+'yrs'
+df3_filtering_col = f's{start_year_in}e{end_year_in}yrs'
 #df4 = df3[df3.s2006e2025yrs > lasting_yrs]
 df4 = df3[df3[df3_filtering_col] > lasting_yrs]
 
@@ -65,7 +74,7 @@ for stk2 in df6.index:
     else :
         #ser_s = df6.loc[stk2][-1-tmp2:-1]
         ser_s = df6.loc[stk2].iloc[-1-tmp2:-1]
-    if ser_s.std() <= std_grd : 
+    if ser_s.std() <= std_grd :
         vs_2 = True
     else :
         vs_2 = False

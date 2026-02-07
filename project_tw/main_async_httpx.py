@@ -201,18 +201,25 @@ def get_supportred_stock (url) :
 
 if __name__ == '__main__':
     help_msg ='\
-Usage: main_async_httpx.py [end_year]\n\
+Usage: main_async_httpx.py [start_year] [end_year]\n\
 For example:\n\
-main_async_httpx.py 2025\
+main_async_httpx.py 2010 2026\
 '
-    end_year_in = 2025
-    if (len(sys.argv) > 1 and sys.argv[1] == '-h') or len(sys.argv) > 2:
+    start_year_in = 2010
+    end_year_in   = 2026
+    if (len(sys.argv) > 1 and sys.argv[1] == '-h') or len(sys.argv) > 3:
         print(help_msg)
         exit()
 
     if len(sys.argv) == 2:
         try:
-            end_year_in = int(sys.argv[1])
+            start_year_in = int(sys.argv[1])
+        except:
+            print("Input start_year is not a valid integer!")
+
+    if len(sys.argv) == 3:
+        try:
+            end_year_in = int(sys.argv[2])
         except:
             print("Input end_year is not a valid integer!")
 
@@ -226,10 +233,10 @@ main_async_httpx.py 2025\
     #stock_chunk = 245 # max 2622 #most efficient
     stock_chunk = 33 # max 2622
     info_chunk = 1 #(15+1)*15/2 + 1 = 120 + 1, 1 means extra header capture
-    start_year_lb = 2006
-    start_year_ub = 2007
-    end_year_lb = 2007
-    end_year_ub = end_year_in + 1
+    start_year_lb = start_year_in
+    start_year_ub = start_year_in + 1
+    end_year_lb = start_year_in + 1
+    end_year_ub = end_year_in   + 1
     retry_interval = 1
 
     #User non-modifiable variable
