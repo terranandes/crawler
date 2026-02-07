@@ -30,7 +30,7 @@ if len(sys.argv) == 3:
         print("Input end_year is not a valid integer!")
 
 #Async gathering data
-subprocess.run(['python3', 'main_async_httpx.py', f'{start_year_in}', 'f{end_year_in}])
+subprocess.run(['python3', 'main_async_httpx.py', f'{start_year_in}', f'{end_year_in}'])
 
 subprocess.run(f'rm -f                stock_list_s{start_year_in}e{end_year_in}_unfiltered.csv', shell=True)
 subprocess.run(f'cp -f stock_list.csv stock_list_s{start_year_in}e{end_year_in}_unfiltered.csv', shell=True)
