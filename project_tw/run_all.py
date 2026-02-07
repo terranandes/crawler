@@ -36,7 +36,7 @@ subprocess.run(f'rm -f                stock_list_s{start_year_in}e{end_year_in}_
 subprocess.run(f'cp -f stock_list.csv stock_list_s{start_year_in}e{end_year_in}_unfiltered.csv', shell=True)
 
 #Filtering data
-subprocess.run(['python3', 'pandas_stock.py', f'{end_year_in}'])
+subprocess.run(['python3', 'pandas_stock.py', f'{start_year_in}', f'{end_year_in}'])
 
 #Predicting step to next
 

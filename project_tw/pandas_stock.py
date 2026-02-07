@@ -9,7 +9,7 @@ For example:\n\
 pandas_stock.py 2010 2026\
 '
 
-end_year_in = 2010
+start_year_in = 2010
 end_year_in = 2026
 
 if (len(sys.argv) > 1 and sys.argv[1] == '-h') or len(sys.argv) > 3:
