@@ -25,6 +25,10 @@ if len(sys.argv) == 2:
 
 if len(sys.argv) == 3:
     try:
+        start_year_in = int(sys.argv[1])
+    except:
+        print("Input start_year is not a valid integer!")
+    try:
         end_year_in = int(sys.argv[2])
     except:
         print("Input end_year is not a valid integer!")
@@ -35,6 +39,7 @@ subprocess.run(['python3', 'main_async_httpx.py', f'{start_year_in}', f'{end_yea
 subprocess.run(f'rm -f                stock_list_s{start_year_in}e{end_year_in}_unfiltered.csv', shell=True)
 subprocess.run(f'cp -f stock_list.csv stock_list_s{start_year_in}e{end_year_in}_unfiltered.csv', shell=True)
 
+print(f'Complete stock_list_s{start_year_in}e{end_year_in}_unfiltered.csv')
 #Filtering data
 subprocess.run(['python3', 'pandas_stock.py', f'{start_year_in}', f'{end_year_in}'])
 

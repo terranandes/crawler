@@ -24,6 +24,10 @@ if len(sys.argv) == 2:
 
 if len(sys.argv) == 3:
     try:
+        start_year_in = int(sys.argv[1])
+    except:
+        print("Input start_year is not a valid integer!")
+    try:
         end_year_in = int(sys.argv[2])
     except:
         print("Input end_year is not a valid integer!")
@@ -89,3 +93,4 @@ df8 = df7[vslist_3]
 
 df8.to_csv(f'stock_list_s{start_year_in}e{end_year_in}_filtered.csv')
 
+print (f'Complete stock_list_s{start_year_in}e{end_year_in}_filtered.csv')
