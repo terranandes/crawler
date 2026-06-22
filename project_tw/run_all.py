@@ -6,7 +6,7 @@ import subprocess
 help_msg ='\
 Usage: run_all.py [start_year] [end_year]\n\
 For example:\n\
-run_all.py 2010 2026\
+run_all.py 2006 2026\
 '
 
 

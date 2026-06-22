@@ -1,6 +1,6 @@
-uv run run_all.py end_year
+uv run run_all.py start_year end_year
 for example:
-uv run run_all.py 2026
+uv run run_all.py 2006 2026
 
 python3 main.py:            (sync  crawlering, time to complete:  ~24hrs)
 python3 main_async_httpx.py (async crawlering, time to complete: ~1.5hrs)
