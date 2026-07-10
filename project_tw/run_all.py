@@ -4,11 +4,10 @@ import subprocess
 #gathering process to complete data
 
 help_msg ='\
-Usage: run_all.py [start_year] [end_year]\n\
+Usage: uv run run_all.py [start_year] [end_year]\n\
 For example:\n\
-run_all.py 2006 2026\
+uv run run_all.py 2006 2026\
 '
-
 
 start_year_in = 2010
 end_year_in   = 2026
