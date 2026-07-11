@@ -94,3 +94,16 @@ df8 = df7[vslist_3]
 df8.to_csv(f'stock_list_s{start_year_in}e{end_year_in}_filtered.csv')
 
 print (f'Complete stock_list_s{start_year_in}e{end_year_in}_filtered.csv')
+
+#transform csv into xlsx, sorted by 's(start_year)'+e(end_year_in)+'bao', csv files are preserved
+sort_col = f's{start_year_in}e{end_year_in}bao'
+
+fn_unf = f'stock_list_s{start_year_in}e{end_year_in}_unfiltered'
+df_unf = pd.read_csv(f'{fn_unf}.csv')
+df_unf.sort_values(by=sort_col, ascending=False).to_excel(f'{fn_unf}.xlsx', index=False)
+print (f'Complete {fn_unf}.xlsx')
+
+fn_flt = f'stock_list_s{start_year_in}e{end_year_in}_filtered'
+df_flt = pd.read_csv(f'{fn_flt}.csv', index_col=0)
+df_flt.sort_values(by=sort_col, ascending=False).to_excel(f'{fn_flt}.xlsx')
+print (f'Complete {fn_flt}.xlsx')
