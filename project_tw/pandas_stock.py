@@ -50,7 +50,7 @@ df3 = df2.drop(drop_yrs_cl, axis=1)
 df3_filtering_col = f's{start_year_in}e{end_year_in}yrs'
 df4 = df3[df3[df3_filtering_col] > lasting_yrs]
 
-#sorted by 's(start_year)'+str(end_year_in)+'bao'
+#sorted by 's(start_year)'+e(end_year_in)+'bao'
 df5=df4.sort_values(by=f's{start_year_in}e{end_year_in}bao', ascending=False)
 
 #filter valid stock info only
