@@ -1,6 +1,7 @@
 #! ../.venv/bin/python3
 import sys
 import subprocess
+import csv
 #gathering process to complete data
 
 help_msg ='\
@@ -39,6 +40,18 @@ subprocess.run(f'rm -f                stock_list_s{start_year_in}e{end_year_in}_
 subprocess.run(f'cp -f stock_list.csv stock_list_s{start_year_in}e{end_year_in}_unfiltered.csv', shell=True)
 
 print(f'Complete stock_list_s{start_year_in}e{end_year_in}_unfiltered.csv')
+
+#Extract codes whose data columns are all empty into recrawl_codes.txt,
+#ready for a later main_async_httpx_recrawl.py pass (e.g. after a server outage)
+fn_recrawl = 'recrawl_codes.txt'
+with open(f'stock_list_s{start_year_in}e{end_year_in}_unfiltered.csv', newline='', encoding='utf-8') as csvFile :
+    stock_rows = list(csv.reader(csvFile))
+empty_codes = [row[0] for row in stock_rows[1:] if not any(v for v in row[3:])]
+with open(fn_recrawl, 'w', encoding='utf-8') as recrawlFile :
+    for code in empty_codes :
+        recrawlFile.write(code + '\n')
+print(f'{len(empty_codes)} empty codes written to {fn_recrawl}')
+
 #Filtering data
 subprocess.run(['python3', 'pandas_stock.py', f'{start_year_in}', f'{end_year_in}'])
 

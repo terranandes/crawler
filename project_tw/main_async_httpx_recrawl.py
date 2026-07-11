@@ -45,6 +45,7 @@ async def get_stock_info_year(i, sy, ey, para_exep, st):
     #print('start get_stock_info_year', i, sy, ey, st)
     para_qry = upt_para(para_exep, st, sy, ey)
     retry = True
+    srv_err_cnt = 0
     while retry:
         try:
             async with httpx.AsyncClient() as aclient:
@@ -54,6 +55,16 @@ async def get_stock_info_year(i, sy, ey, para_exep, st):
                 #print(resp_exep)
                 #print(resp_exep.json())
                 resp_exep.raise_for_status()  # REVISIT, need redo if received "Bad request'
+            sd_resp = json.loads(resp_exep.text)  # stock_dict response
+            #server may answer HTTP 200 with an error body (e.g. Redis MISCONF), retry those too
+            if sd_resp.get('resultCode') == 500:
+                srv_err_cnt += 1
+                if srv_err_cnt >= max_srv_retry:
+                    print(f'{st} s{sy}e{ey}: gave up after {srv_err_cnt} resultCode-500 responses')
+                    retry = False  #give up, row stays empty
+                else:
+                    raise Exception('resultCode 500')
+            else:
                 retry = False
         except Exception as e:
             #print(e, url_exep, para_qry, 'Hello info?')
@@ -62,7 +73,6 @@ async def get_stock_info_year(i, sy, ey, para_exep, st):
             retry_interval += 0.01
             await asyncio.sleep(retry_interval)
 
-    sd_resp = json.loads(resp_exep.text)  # stock_dict response
     if 'buyAtOpening' in sd_resp:
         bao = float(sd_resp['buyAtOpening']['yroi'].replace(' %', ''))
     else:
@@ -89,6 +99,7 @@ async def get_stock_id_name(para_exep, st):
     #print('start get_stock_id_name', st)
     para_qry = upt_para(para_exep, st, start_year_lb, end_year_ub)
     retry = True
+    srv_err_cnt = 0
     while retry:
         try:
             #resp_exep = reqs.post(url_exep, json=para_qry)
@@ -98,6 +109,16 @@ async def get_stock_id_name(para_exep, st):
                 #print(resp_exep)
                 #print(resp_exep.json())
                 resp_exep.raise_for_status()  # REVISIT, need redo if received "Bad request'
+            sd_resp = json.loads(resp_exep.text)  # stock_dict response
+            #server may answer HTTP 200 with an error body (e.g. Redis MISCONF), retry those too
+            if sd_resp.get('resultCode') == 500:
+                srv_err_cnt += 1
+                if srv_err_cnt >= max_srv_retry:
+                    print(f'{st}: gave up after {srv_err_cnt} resultCode-500 responses')
+                    retry = False  #give up, row stays empty
+                else:
+                    raise Exception('resultCode 500')
+            else:
                 retry = False
         except Exception as e:
             #print(e, url_exep, para_qry, 'Hello id?')
@@ -106,7 +127,6 @@ async def get_stock_id_name(para_exep, st):
             retry_interval += 0.01
             await asyncio.sleep(retry_interval)
 
-    sd_resp = json.loads(resp_exep.text)  # stock_dict response
     if 'n' in sd_resp:
         yrs = sd_resp['n']
     else:
@@ -245,6 +265,7 @@ Only crawls the stock codes listed in recrawl_codes.txt\
     end_year_lb = start_year_in + 1
     end_year_ub = end_year_in   + 1
     retry_interval = 1
+    max_srv_retry = 5 #give up on a query after this many HTTP-200 error bodies (resultCode 500)
 
     #User non-modifiable variable
     #rest_interval = stock_chunk * 0.001
