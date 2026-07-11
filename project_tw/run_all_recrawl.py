@@ -73,11 +73,9 @@ merged = 0
 for i, row in enumerate(stock_rows) :
     if row[0] in successful :
         new_row = successful.pop(row[0])
-        #keep the already known name if the recrawl name query came back empty
-        if not new_row[1] and row[1] :
-            new_row[1] = row[1]
-            new_row[2] = row[2]
-        stock_rows[i] = new_row
+        #merge cell-wise: never overwrite an existing value with an empty one,
+        #so a partially recrawled row cannot clobber good cells
+        stock_rows[i] = [nv if nv != '' else ov for nv, ov in zip(new_row, row)]
         merged += 1
 with open(fn_unfiltered, 'w', newline='', encoding='utf-8') as csvFile :
     csvWriter = csv.writer(csvFile)
@@ -86,12 +84,21 @@ with open(fn_unfiltered, 'w', newline='', encoding='utf-8') as csvFile :
 print(f'Merged {merged} recrawled stocks into {fn_unfiltered}', flush=True)
 if successful :
     print(f'Codes not present in the CSV, skipped: {sorted(successful)}', flush=True)
-#Keep only the still-empty codes in recrawl_codes.txt for the next run
-still_empty = [row[0] for row in sd_recrawl[1:] if all(v is None for v in row[3:])]
+
+#Keep the codes whose merged row still needs a recrawl in recrawl_codes.txt:
+#no data at all, or a bao hole after the first non-empty bao
+def needs_recrawl (row, bao_idx) :
+    baos = [row[i] for i in bao_idx]
+    first = next((k for k, v in enumerate(baos) if v), None)
+    return first is None or '' in baos[first:]
+
+bao_idx = [i for i, cl in enumerate(stock_rows[0]) if cl.endswith('bao')]
+recrawled_ids = {row[0] for row in sd_recrawl[1:]}
+still_empty = [row[0] for row in stock_rows[1:] if row[0] in recrawled_ids and needs_recrawl(row, bao_idx)]
 with open('recrawl_codes.txt', 'w', encoding='utf-8') as recrawlFile :
     for code in still_empty :
         recrawlFile.write(code + '\n')
-print(f'{len(still_empty)} codes still empty, kept in recrawl_codes.txt: {still_empty}', flush=True)
+print(f'{len(still_empty)} codes still need a recrawl, kept in recrawl_codes.txt: {still_empty}', flush=True)
 
 #Filtering data
 subprocess.run(['python3', '../pandas_stock.py' if csv_dir == 'output' else 'pandas_stock.py',

@@ -2,7 +2,8 @@ uv run run_all.py start_year end_year
 for example:
 uv run run_all.py 2006 2026
 flow: main_async_httpx.py -> stock_list_s{sy}e{ey}_unfiltered.csv
-      -> empty codes written to recrawl_codes.txt -> pandas_stock.py
+      -> recrawl candidates (no data, or a bao hole after the first
+         non-empty bao) written to recrawl_codes.txt -> pandas_stock.py
 
 uv run run_all_recrawl.py start_year end_year
 for example:
@@ -10,8 +11,9 @@ uv run run_all_recrawl.py 2006 2026
 to re-crawl only the codes in recrawl_codes.txt (e.g. after the server
 answered HTTP 200 with resultCode 500 error bodies during an outage),
 merge the successful rows into stock_list_s{sy}e{ey}_unfiltered.csv
-(searched in ./ then ./output), rerun pandas_stock.py there, and keep
-only the still-empty codes in recrawl_codes.txt.
+(searched in ./ then ./output, cell-wise so partial recrawls never
+clobber good data), rerun pandas_stock.py there, and keep only the
+codes still needing a recrawl in recrawl_codes.txt.
 repeat when the crawl log shows "gave up after N resultCode-500
 responses" until nothing merges; codes that stay empty with no name
 are simply not supported by the site.
