@@ -51,7 +51,10 @@ if csv_dir is None:
 fn_unfiltered = os.path.join(csv_dir, fn_unfiltered)
 
 #Async gathering data for the recrawl codes only
-subprocess.run(['python3', 'main_async_httpx_recrawl.py', f'{start_year_in}', f'{end_year_in}'])
+crawl = subprocess.run(['python3', 'main_async_httpx_recrawl.py', f'{start_year_in}', f'{end_year_in}'])
+if crawl.returncode != 0 :
+    print(f'main_async_httpx_recrawl.py failed (returncode {crawl.returncode}), abort', flush=True)
+    sys.exit(crawl.returncode)
 
 #Merge successful recrawl rows into the unfiltered CSV, matching by stock id
 with open('stock_list_recrawl.json', 'r', encoding='utf-8') as jsonFile :
