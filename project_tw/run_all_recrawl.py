@@ -83,9 +83,12 @@ with open(fn_unfiltered, 'w', newline='', encoding='utf-8') as csvFile :
 print(f'Merged {merged} recrawled stocks into {fn_unfiltered}', flush=True)
 if successful :
     print(f'Codes not present in the CSV, skipped: {sorted(successful)}', flush=True)
+#Keep only the still-empty codes in recrawl_codes.txt for the next run
 still_empty = [row[0] for row in sd_recrawl[1:] if all(v is None for v in row[3:])]
-if still_empty :
-    print(f'{len(still_empty)} codes still empty, keep them in recrawl_codes.txt: {still_empty}', flush=True)
+with open('recrawl_codes.txt', 'w', encoding='utf-8') as recrawlFile :
+    for code in still_empty :
+        recrawlFile.write(code + '\n')
+print(f'{len(still_empty)} codes still empty, kept in recrawl_codes.txt: {still_empty}', flush=True)
 
 #Filtering data
 subprocess.run(['python3', '../pandas_stock.py' if csv_dir == 'output' else 'pandas_stock.py',
