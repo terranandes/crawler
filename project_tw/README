@@ -1,6 +1,20 @@
 uv run run_all.py start_year end_year
 for example:
 uv run run_all.py 2006 2026
+flow: main_async_httpx.py -> stock_list_s{sy}e{ey}_unfiltered.csv
+      -> empty codes written to recrawl_codes.txt -> pandas_stock.py
+
+uv run run_all_recrawl.py start_year end_year
+for example:
+uv run run_all_recrawl.py 2006 2026
+to re-crawl only the codes in recrawl_codes.txt (e.g. after the server
+answered HTTP 200 with resultCode 500 error bodies during an outage),
+merge the successful rows into stock_list_s{sy}e{ey}_unfiltered.csv
+(searched in ./ then ./output), rerun pandas_stock.py there, and keep
+only the still-empty codes in recrawl_codes.txt.
+repeat when the crawl log shows "gave up after N resultCode-500
+responses" until nothing merges; codes that stay empty with no name
+are simply not supported by the site.
 
 python3 main.py:            (sync  crawlering, time to complete:  ~24hrs)
 python3 main_async_httpx.py (async crawlering, time to complete: ~1.5hrs)
@@ -9,6 +23,10 @@ to crawler all data from www.moneycome.in
 output:
   -- stock_list.json
   -- stock_list.csv
+
+pandas_stock.py: filter/sort the unfiltered CSV, also exports
+stock_list_s{sy}e{ey}_unfiltered.xlsx and _filtered.xlsx sorted by
+s{sy}e{ey}bao (run it from the directory holding the CSVs)
 
 plot.py: TBD
 to plot a readable animation
