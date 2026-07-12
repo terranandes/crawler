@@ -134,3 +134,10 @@ dmypy.json
 
 #VIM swp
 *.swp
+
+# project_tw regenerated crawl intermediates (canonical dataset lives in project_tw/output/)
+project_tw/stock_list.csv
+project_tw/stock_list.json
+project_tw/stock_list_recrawl.*
+project_tw/stock_list_s*e*_*.csv
+project_tw/stock_list_s*e*_*.xlsx
